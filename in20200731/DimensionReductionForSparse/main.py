@@ -1,6 +1,6 @@
-from in20200731.DimensionRedunctionForSparse.Sparse import SparseModel
-from in20200731.DimensionRedunctionForSparse.util import benchmark, help, aim
-from in20200731.DimensionRedunctionForSparse.DE import DE
+from in20200731.DimensionReductionForSparse.Sparse import SparseModel
+from in20200731.DimensionReductionForSparse.util import benchmark, help, aim
+from in20200731.DimensionReductionForSparse.DE import DE
 from sklearn.preprocessing import PolynomialFeatures
 from in20200710.BatchSparseTrainOptimization.util import help as new_help
 import numpy as np
@@ -9,13 +9,13 @@ import time
 
 if __name__ == '__main__':
     Dim = 50
-    feature_size = 10000
+    feature_size = 50000
     degree = 2
-    benchmark_function = benchmark.Ackley
+    benchmark_function = benchmark.Rastrigin
     mini_batch_size = 1000
     evaluate_function = aim.fitness_evaluation
-    scale_range = [-32, 32]
-
+    scale_range = [-5, 5]
+    name = 'Rastrigin'
     time_Lasso_start = time.process_time()
     reg_Lasso, feature_names = SparseModel.Regression(degree, feature_size, Dim, mini_batch_size, scale_range,
                                                       benchmark_function)
@@ -162,15 +162,20 @@ if __name__ == '__main__':
     for i in range(len(best_one_index_trace[0])):
         best_one_index_average.append(sum(best_one_index_trace[:, i]) / test_times)
 
+    help.write_trace(name + '_LASSO', simple_Lasso_problems_trace, simple_Lasso_problems_trace_average)
+    help.write_trace(name + '_random', simple_random_problems_trace, simple_random_problems_trace_average)
+    help.write_trace(name + '_one', simple_one_problems_trace, simple_one_problems_trace_average)
+    help.write_trace(name + '_normal', complex_problems_trace, complex_problems_trace_average)
+
     x1 = np.linspace(len(groups_Lasso), len(groups_Lasso) * (simple_MAX_iteration + 1), simple_MAX_iteration, endpoint=False)
     x2 = np.linspace(len(groups_random), len(groups_random) * (simple_MAX_iteration + 1), simple_MAX_iteration, endpoint=False)
     x3 = np.linspace(len(groups_one), len(groups_one) * (simple_MAX_iteration + 1), simple_MAX_iteration, endpoint=False)
     x4 = np.linspace(1, complex_MAX_iteration + 1, complex_MAX_iteration, endpoint=False)
 
     help.draw_obj(x1, x2, x3, x4, simple_Lasso_problems_trace_average, simple_random_problems_trace_average,
-                  simple_one_problems_trace_average, complex_problems_trace_average)
+                  simple_one_problems_trace_average, complex_problems_trace_average, name)
 
     x = np.linspace(1, Dim + 1, Dim, endpoint=False)
-    help.draw_var(x, best_Lasso_index_average, best_random_index_average, best_one_index_average, index)
+    help.draw_var(x, best_Lasso_index_average, best_random_index_average, best_one_index_average, index, name)
 
 

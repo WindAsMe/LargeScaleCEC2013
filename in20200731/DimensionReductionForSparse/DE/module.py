@@ -1,5 +1,5 @@
 import geatpy as ea
-from in20200731.DimensionRedunctionForSparse.parameters import global_optimum, threshold
+from in20200731.DimensionReductionForSparse.parameters import global_optimum, threshold
 
 
 class MySoea_DE_rand_1_L_templet(ea.soea_DE_rand_1_L_templet):

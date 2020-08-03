@@ -1,7 +1,6 @@
-from in20200731.DimensionRedunctionForSparse.DE import MyProblem, module
+from in20200731.DimensionReductionForSparse.DE import MyProblem, module
 import geatpy as ea
 import numpy as np
-import copy
 
 
 def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, scale_range, function, groups, max_min):

@@ -1,6 +1,6 @@
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn import linear_model
-from in20200731.DimensionRedunctionForSparse.util import help
+from in20200731.DimensionReductionForSparse.util import help
 import numpy as np
 
 
