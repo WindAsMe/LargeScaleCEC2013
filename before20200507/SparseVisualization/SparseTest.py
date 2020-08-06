@@ -49,7 +49,7 @@ def find_valid_coefficients(feature_name, coef):
         if isSeparable(c):
             separable_name.append(c)
             separable += 1
-    print("DimensionRedunctionForSparse number: ", separable)
+    print("DimensionReductionForSparse number: ", separable)
     return valid_index
 
 

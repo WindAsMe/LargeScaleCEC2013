@@ -142,4 +142,24 @@ def draw_var(x, y1, y2):
     plt.show()
 
 
+def groups_one_create(Dim):
+    groups = []
+    for i in range(Dim):
+        groups.append([i])
+    return groups
 
+
+def groups_random_create(Dim, groups_num=25, max_number=10):
+    groups = []
+    d = {}
+    for i in range(Dim):
+        d[i] = []
+    for i in range(Dim):
+        r = random.randint(0, groups_num-1)
+        while len(d[r]) >= max_number:
+            r = random.randint(0, groups_num-1)
+        d[r].append(i)
+    for i in d:
+        if d[i]:
+            groups.append(d[i])
+    return groups

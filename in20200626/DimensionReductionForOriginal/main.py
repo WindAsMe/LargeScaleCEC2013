@@ -47,7 +47,7 @@ if __name__ == '__main__':
         simple_problems_Data_index += rest_group
     print('extract: ', simple_problems_Data_index)
     print('extract len: ', len(simple_problems_Data_index))
-    # groups = simple_problems_Data_index
+    # groups_Lasso = simple_problems_Data_index
     #
     # """The next is DE optimization"""
     # # Why in first generation has the gap?
@@ -83,7 +83,7 @@ if __name__ == '__main__':
     #     print('round ', t)
     #     best_simple_trace, best_simple_index_trace = DE.SimpleProblemsOptimization(Dim, simple_population_size, MAX_iteration,
     #                                                                          benchmark_function,
-    #                                                                          simple_evaluate_function, groups,
+    #                                                                          simple_evaluate_function, groups_Lasso,
     #                                                                          intercept, max_or_min)
     #     best_simple_var_traces.append(best_simple_index_trace)
     #     real_label = help.create_result(best_simple_index_trace, benchmark_function)

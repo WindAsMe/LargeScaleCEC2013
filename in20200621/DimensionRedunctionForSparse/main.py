@@ -20,15 +20,13 @@ if __name__ == '__main__':
     reg_Lasso, feature_names = SparseModel.Regression(degree, feature_size, Dim, mini_batch_size, scale_range,
                                                       benchmark_function)
     time_Lasso_end = time.process_time()
-    print('Lasso create time: ', time_Lasso_end - time_Lasso_start)
 
     coef, feature_names = help.not_zero_feature(reg_Lasso.coef_, help.feature_names_normalization(feature_names))
     time_grouping_start = time.process_time()
-    groups = new_help.group_DFS(Dim, feature_names, 5)
-    time_grouping_end = time.process_time()
-    print('Grouping time: ', time_grouping_end - time_grouping_start)
-    print('number of groups: ', len(groups))
-    print(groups)
+    groups_Lasso = new_help.group_DFS(Dim, feature_names, 5)
+    groups_random = help.groups_random_create(Dim, 25, 10)
+    groups_one = help.groups_one_create(Dim)
+
     #
     # simple_problems_Dim, simple_problems_Data_index = help.extract(groups_modified)
     """The next is DE optimization"""
@@ -36,8 +34,8 @@ if __name__ == '__main__':
     # Because the grouping strategy firstly do the best features combination in initial population
     simple_population_size = 30
     complex_population_size = 1500
-    simple_MAX_iteration = 400
-    complex_MAX_iteration = 600
+    simple_MAX_iteration = 1000
+    complex_MAX_iteration = simple_MAX_iteration
 
     max_or_min = 1
     poly = PolynomialFeatures(degree=2)
