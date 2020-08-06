@@ -10,13 +10,13 @@ from scipy.stats import kruskal
 
 if __name__ == '__main__':
     Dim = 50
-    feature_size = 10000
+    feature_size = 50000
     degree = 2
-    benchmark_function = benchmark.ShiftedElliptic
+    benchmark_function = benchmark.Ackley
     mini_batch_size = 1000
     evaluate_function = aim.fitness_evaluation
-    scale_range = [-100, 100]
-    name = 'ShiftedElliptic'
+    scale_range = [-32, 32]
+    name = 'Ackley'
     time_Lasso_start = time.process_time()
     reg_Lasso, feature_names = SparseModel.Regression(degree, feature_size, Dim, mini_batch_size, scale_range,
                                                       benchmark_function)
@@ -138,11 +138,11 @@ if __name__ == '__main__':
     simple_random_problems_trace = np.array(simple_random_problems_trace)
     simple_one_problems_trace = np.array(simple_one_problems_trace)
 
-    best_Lasso_index_trace = np.array(best_Lasso_index_trace, dtype='float16')
-    best_random_index_trace = np.array(best_random_index_trace, dtype='float16')
-    best_one_index_trace = np.array(best_one_index_trace, dtype='float16')
+    best_Lasso_index_trace = np.array(best_Lasso_index_trace)
+    best_random_index_trace = np.array(best_random_index_trace)
+    best_one_index_trace = np.array(best_one_index_trace)
 
-    complex_problems_trace = np.array(complex_problems_trace, dtype='float16')
+    complex_problems_trace = np.array(complex_problems_trace)
 
     for i in range(len(simple_Lasso_problems_trace[0])):
         simple_Lasso_problems_trace_average.append(sum(simple_Lasso_problems_trace[:, i]) / test_times)
