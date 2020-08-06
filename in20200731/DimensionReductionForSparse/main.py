@@ -5,17 +5,18 @@ from sklearn.preprocessing import PolynomialFeatures
 from in20200710.BatchSparseTrainOptimization.util import help as new_help
 import numpy as np
 import time
+from scipy.stats import kruskal
 
 
 if __name__ == '__main__':
     Dim = 50
-    feature_size = 50000
+    feature_size = 10000
     degree = 2
-    benchmark_function = benchmark.Rastrigin
+    benchmark_function = benchmark.ShiftedElliptic
     mini_batch_size = 1000
     evaluate_function = aim.fitness_evaluation
-    scale_range = [-5, 5]
-    name = 'Rastrigin'
+    scale_range = [-100, 100]
+    name = 'ShiftedElliptic'
     time_Lasso_start = time.process_time()
     reg_Lasso, feature_names = SparseModel.Regression(degree, feature_size, Dim, mini_batch_size, scale_range,
                                                       benchmark_function)
@@ -37,8 +38,10 @@ if __name__ == '__main__':
     complex_population_size = 1000
     simple_MAX_iteration = 1000
     complex_MAX_iteration = 20000
+    draw_simple_Max_iteration = 500
+    draw_complex_Max_iteration = 2000
 
-    test_times = 2
+    test_times = 50
     efficient_Lasso_iteration_times = 0
     efficient_random_iteration_times = 0
     efficient_one_iteration_times = 0
@@ -86,7 +89,6 @@ if __name__ == '__main__':
         simple_Lasso_problems_trace.append(best_Lasso_obj_trace)
 
         best_Lasso_index_trace.append(best_Lasso_index)
-        print('Grouping Lasso optimization time: ', time2 - time1)
 
         time_Lasso_group += time2 - time1
 
@@ -100,7 +102,6 @@ if __name__ == '__main__':
         efficient_random_iteration_times += e_random_time
         simple_random_problems_trace.append(best_random_obj_trace)
         best_random_index_trace.append(best_random_index)
-        print('Grouping random optimization time: ', time3 - time2)
         time_random_group += time3 - time2
 
         best_one_obj_trace, best_one_index, e_one_time = DE.SimpleProblemsOptimization(Dim, simple_population_size,
@@ -113,7 +114,6 @@ if __name__ == '__main__':
         efficient_one_iteration_times += e_one_time
         simple_one_problems_trace.append(best_one_obj_trace)
         best_one_index_trace.append(best_one_index)
-        print('Grouping one optimization time: ', time4 - time3)
         time_one_group += time4 - time3
 
         best_complex_trace, e_complex_time = DE.ComplexProblemsOptimization(Dim, complex_population_size, complex_MAX_iteration,
@@ -122,7 +122,6 @@ if __name__ == '__main__':
         time5 = time.process_time()
         efficient_complex_iteration_times += e_complex_time
         complex_problems_trace.append(best_complex_trace)
-        print('Normal optimization time: ', time5 - time4)
         time_normal += time5 - time4
 
     print('--------------------------------------------------------------------')
@@ -139,11 +138,11 @@ if __name__ == '__main__':
     simple_random_problems_trace = np.array(simple_random_problems_trace)
     simple_one_problems_trace = np.array(simple_one_problems_trace)
 
-    best_Lasso_index_trace = np.array(best_Lasso_index_trace)
-    best_random_index_trace = np.array(best_random_index_trace)
-    best_one_index_trace = np.array(best_one_index_trace)
+    best_Lasso_index_trace = np.array(best_Lasso_index_trace, dtype='float16')
+    best_random_index_trace = np.array(best_random_index_trace, dtype='float16')
+    best_one_index_trace = np.array(best_one_index_trace, dtype='float16')
 
-    complex_problems_trace = np.array(complex_problems_trace)
+    complex_problems_trace = np.array(complex_problems_trace, dtype='float16')
 
     for i in range(len(simple_Lasso_problems_trace[0])):
         simple_Lasso_problems_trace_average.append(sum(simple_Lasso_problems_trace[:, i]) / test_times)
@@ -167,15 +166,20 @@ if __name__ == '__main__':
     help.write_trace(name + '_one', simple_one_problems_trace, simple_one_problems_trace_average)
     help.write_trace(name + '_normal', complex_problems_trace, complex_problems_trace_average)
 
-    x1 = np.linspace(len(groups_Lasso), len(groups_Lasso) * (simple_MAX_iteration + 1), simple_MAX_iteration, endpoint=False)
-    x2 = np.linspace(len(groups_random), len(groups_random) * (simple_MAX_iteration + 1), simple_MAX_iteration, endpoint=False)
-    x3 = np.linspace(len(groups_one), len(groups_one) * (simple_MAX_iteration + 1), simple_MAX_iteration, endpoint=False)
-    x4 = np.linspace(1, complex_MAX_iteration + 1, complex_MAX_iteration, endpoint=False)
-
-    help.draw_obj(x1, x2, x3, x4, simple_Lasso_problems_trace_average, simple_random_problems_trace_average,
-                  simple_one_problems_trace_average, complex_problems_trace_average, name)
+    x1 = np.linspace(complex_population_size, complex_population_size * (draw_simple_Max_iteration + 1),
+                     draw_simple_Max_iteration, endpoint=False)
+    x2 = np.linspace(complex_population_size, complex_population_size * (draw_complex_Max_iteration + 1),
+                     draw_complex_Max_iteration, endpoint=False)
+    help.draw_obj(x1, x2, simple_Lasso_problems_trace_average[0:draw_simple_Max_iteration],
+                  simple_random_problems_trace_average[0:draw_simple_Max_iteration],
+                  simple_one_problems_trace_average[0:draw_simple_Max_iteration],
+                  complex_problems_trace_average[0:draw_complex_Max_iteration], name)
 
     x = np.linspace(1, Dim + 1, Dim, endpoint=False)
     help.draw_var(x, best_Lasso_index_average, best_random_index_average, best_one_index_average, index, name)
-
+    statistic = [10, 50, 100, 200]
+    for s in statistic:
+        print('Kruskal statistic in ', str(s * complex_population_size), 'th Evaluation times: ',
+              kruskal(simple_Lasso_problems_trace[:, s-1], simple_random_problems_trace[:, s-1],
+                      simple_one_problems_trace[:, s-1], complex_problems_trace[:, s-1]))
 

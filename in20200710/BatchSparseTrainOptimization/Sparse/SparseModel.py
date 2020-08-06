@@ -28,7 +28,7 @@ def is_zero(coef):
 def Regression(degree, train_size, Func_Dim, mini_batch_size, scale_range, Func_Num):
 
     poly_reg = PolynomialFeatures(degree=degree)
-    reg_Lasso = linear_model.SGDRegressor(alpha=0.01, penalty='l1', l1_ratio=1, loss='huber', tol=1e-3, average=True)
+    reg_Lasso = linear_model.SGDRegressor(learning_rate='optimal', penalty='l1', l1_ratio=1, loss='huber', tol=1e-2, average=True)
     train_data = help.create_data(train_size, Func_Dim, scale_range)
 
     times = int(train_size / mini_batch_size)
@@ -43,11 +43,11 @@ def Regression(degree, train_size, Func_Dim, mini_batch_size, scale_range, Func_
     feature_names = poly_reg.get_feature_names(input_features=get_feature_name(Func_Dim))
 
     flag = max(abs(reg_Lasso.coef_))
-    print('flag: ', flag)
+    print('max coef: ', flag)
     valid_feature = []
     valid_coef = []
     for i in range(len(reg_Lasso.coef_)):
-        if abs(reg_Lasso.coef_[i]) > 0.01 and abs(reg_Lasso.coef_[i]) > flag * 0.1:
+        if abs(reg_Lasso.coef_[i]) > 0.1 and abs(reg_Lasso.coef_[i]) > flag * 0.2:
             valid_feature.append(feature_names[i])
             valid_coef.append(reg_Lasso.coef_[i])
             continue

@@ -9,6 +9,7 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, sca
     for i in range(len(groups)):
         var_trace = help_SimpleProblemsOptimization(Dim, NIND, MAX_iteration, function, benchmark_function, scale_range,
                                                     groups[i], max_min)
+        iteration_times += len(var_trace) * NIND * len(groups[i])
 
         for element in groups[i]:
             for i in range(len(var_traces)):
@@ -16,7 +17,7 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, sca
                     var_traces[i, element] = var_trace[i, element]
                 else:
                     var_traces[i, element] = var_trace[len(var_trace) - 1, element]
-        iteration_times += len(var_trace)
+
     var_traces = np.array(var_traces, dtype='float16')
 
     obj_traces = []
@@ -73,4 +74,4 @@ def ComplexProblemsOptimization(Dimension, NIND, MAX_iteration, function, benchm
             obj_trace_adjust.append(obj_trace[i, 1])
         else:
             obj_trace_adjust.append(obj_trace[len(obj_trace) - 1, 1])
-    return obj_trace_adjust, len(obj_trace[:, 1])
+    return obj_trace_adjust, len(obj_trace[:, 1]) * NIND

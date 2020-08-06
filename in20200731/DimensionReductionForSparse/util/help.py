@@ -123,11 +123,11 @@ def extract(groups_modified):
     return simple_problems_Dim, simple_problems_Data_index
 
 
-def draw_obj(x1, x2, x3, x4, y1, y2, y3, y4, name):
+def draw_obj(x1, x2, y1, y2, y3, y4, name):
     plt.plot(x1, y1, label='LASSO Grouping')
-    plt.plot(x2, y2, label='One Grouping')
-    plt.plot(x3, y3, label='Random Grouping')
-    plt.plot(x4, y4, label='Normal')
+    plt.plot(x1, y2, label='Random Grouping')
+    plt.plot(x1, y3, label='One Grouping')
+    plt.plot(x2, y4, label='Normal')
     plt.xlabel('Evaluation times')
     plt.ylabel('Fitness')
     plt.legend()
