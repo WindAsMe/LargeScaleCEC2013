@@ -13,7 +13,7 @@ if __name__ == '__main__':
     Func_num = 1
     max_variables_num = 50
 
-    for Func_num in range(1, 16):
+    for Func_num in range(7, 16):
         benchmark_function = benchmark.f_evaluation
         evaluate_function = aim.fitness_evaluation
         benchmark_function_summary = benchmark.f_summary(Func_num)
