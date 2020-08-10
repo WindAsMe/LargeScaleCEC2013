@@ -20,7 +20,7 @@ if __name__ == '__main__':
     mini_batch_size = 1000
     evaluate_function = aim.fitness_evaluation
     name = 'f' + str(func_num)
-    print(name)
+    print(name, 'Optimization')
     # time_Lasso_start = time.process_time()
     # reg_Lasso, feature_names = SparseModel.Regression(degree, feature_size, Dim, mini_batch_size, scale_range,
     #                                                   benchmark_function)
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     simple_population_size = 20
     complex_population_size = 1000
     simple_MAX_iteration = 1000
-    complex_MAX_iteration = 20000
+    complex_MAX_iteration = 50000
     draw_simple_Max_iteration = 500
     draw_complex_Max_iteration = 2000
 
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     time_one_group = 0
     time_normal = 0
     for t in range(test_times):
-        print('round ', t + 1)
+        print('round', t + 1)
         time1 = time.process_time()
         best_Lasso_obj_trace, best_Lasso_index, e_Lasso_time = DE.SimpleProblemsOptimization(Dim, simple_population_size,
                                                                                   simple_MAX_iteration,

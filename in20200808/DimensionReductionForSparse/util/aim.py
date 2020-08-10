@@ -1,8 +1,15 @@
 import numpy as np
+from in20200808.DimensionReductionForSparse.parameters import f_num
 
 
-def fitness_evaluation(Phen, function, func_num):
-    fitness_value_list = []
-    for P in Phen:
-        fitness_value_list.append([function(P, func_num)])
-    return np.array(fitness_value_list)
+def fitness_evaluation(data, f, Dim, group=None):
+    result = []
+    if group is not None:
+        for i in range(Dim):
+            if i not in group:
+                data[:, i] = 0
+
+    for d in data:
+        result.append([f(d, f_num)])
+
+    return np.array(result)
