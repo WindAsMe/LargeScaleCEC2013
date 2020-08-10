@@ -9,7 +9,7 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, sca
     for i in range(len(groups)):
         var_trace = help_SimpleProblemsOptimization(Dim, NIND, MAX_iteration, function, benchmark_function, scale_range,
                                                     groups[i], max_min)
-        print('   finished: ', i, '/', len(groups))
+        print('    Finished: ', i+1, '/', len(groups))
         iteration_times += len(var_trace) * NIND * len(groups[i])
 
         for element in groups[i]:

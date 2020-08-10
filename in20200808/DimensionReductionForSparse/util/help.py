@@ -176,7 +176,14 @@ def write_trace(fileName, trace, trace_average):
     full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\" + fileName
     with open(full_path, 'w') as f:
         for t in trace:
-            f.write(str(t) + '\n')
+            f.write('[')
+            for i in range(len(t)):
+                if i == len(t) - 1:
+                    f.write(str(t[i]))
+                else:
+                    f.write(str(t[i]) + ', ')
+            f.write(']')
+            f.write('\n')
         f.write('\n')
         f.write('\n')
         f.write(str(trace_average))
