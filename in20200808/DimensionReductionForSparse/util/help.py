@@ -123,30 +123,29 @@ def extract(groups_modified):
     return simple_problems_Dim, simple_problems_Data_index
 
 
-def draw_obj(x1, x2, y1, y2, y3, y4, name):
+def draw_obj(x1, x2, y1, y3, y4, name):
     plt.plot(x1, y1, label='LASSO Grouping')
-    plt.plot(x1, y2, label='Random Grouping')
     plt.plot(x1, y3, label='One Grouping')
     plt.plot(x2, y4, label='Normal')
     plt.xlabel('Evaluation times')
     plt.ylabel('Fitness')
     plt.legend()
     plt.savefig(
-        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200731\DimensionReductionForSparse\data\pic\\' + name + '_obj')
+        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\pic\\' + name + '_obj')
     plt.show()
 
 
-def draw_var(x, y1, y2, y3, y4, name):
+def draw_var(x, y1, y3, y4, name):
     plt.tight_layout()
     plt.scatter(x, y1, label='LASSO Grouping', marker='.', c='c')
-    plt.scatter(x, y2, label='Random Grouping', marker=',', c='g')
+    # plt.scatter(x, y2, label='Random Grouping', marker=',', c='g')
     plt.scatter(x, y3, label='One Grouping', marker='o', c='k')
     plt.plot(x, y4, label='Known')
     plt.xlabel('coordinate')
     plt.ylabel('value')
     plt.legend()
     plt.savefig(
-        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200731\DimensionReductionForSparse\data\pic\\' + name + '_var')
+        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\pic\\' + name + '_var')
     plt.show()
 
 
@@ -174,7 +173,7 @@ def groups_random_create(Dim, groups_num=25, max_number=10):
 
 
 def write_trace(fileName, trace, trace_average):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200731\DimensionReductionForSparse\data\\trace\\" + fileName
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\" + fileName
     with open(full_path, 'w') as f:
         for t in trace:
             f.write(str(t) + '\n')
