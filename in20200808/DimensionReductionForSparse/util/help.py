@@ -123,9 +123,9 @@ def extract(groups_modified):
     return simple_problems_Dim, simple_problems_Data_index
 
 
-def draw_obj(x1, x2, y1, y3, y4, name):
+def draw_obj(x1, x2, y1, y4, name):
     plt.plot(x1, y1, label='LASSO Grouping')
-    plt.plot(x1, y3, label='One Grouping')
+    # plt.plot(x1, y3, label='One Grouping')
     plt.plot(x2, y4, label='Normal')
     plt.xlabel('Evaluation times')
     plt.ylabel('Fitness')
@@ -135,11 +135,11 @@ def draw_obj(x1, x2, y1, y3, y4, name):
     plt.show()
 
 
-def draw_var(x, y1, y3, y4, name):
+def draw_var(x, y1, y4, name):
     plt.tight_layout()
     plt.scatter(x, y1, label='LASSO Grouping', marker='.', c='c')
     # plt.scatter(x, y2, label='Random Grouping', marker=',', c='g')
-    plt.scatter(x, y3, label='One Grouping', marker='o', c='k')
+    # plt.scatter(x, y3, label='One Grouping', marker='o', c='k')
     plt.plot(x, y4, label='Known')
     plt.xlabel('coordinate')
     plt.ylabel('value')
