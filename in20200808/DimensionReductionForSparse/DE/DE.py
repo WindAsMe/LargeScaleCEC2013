@@ -1,4 +1,5 @@
-from in20200731.DimensionReductionForSparse.DE import MyProblem, module
+from in20200808.DimensionReductionForSparse.DE import MyProblem
+from in20200808.DimensionReductionForSparse.parameters import f_num
 import geatpy as ea
 import numpy as np
 
@@ -19,7 +20,7 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, sca
 
     obj_traces = []
     for var_trace in var_traces:
-        obj_traces.append(benchmark_function(var_trace))
+        obj_traces.append(benchmark_function(var_trace, f_num))
 
     return obj_traces, var_traces[len(var_traces)-1, :], iteration_times
 
