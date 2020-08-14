@@ -1,5 +1,5 @@
-from in20200710.BatchSparseTrainOptimization.util import help
-from in20200710.BatchSparseTrainOptimization.Sparse import SparseModel
+from in20200808.DimensionReductionForSparse.util import help
+from in20200808.DimensionReductionForSparse.Sparse import SparseModel
 
 
 def group_strategy(Func_num, degree, train_size, Func_Dim, mini_batch_size, scale_range, max_variables_num):

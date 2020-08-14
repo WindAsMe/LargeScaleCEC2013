@@ -211,3 +211,10 @@ def write_var_trace(fileName, trace):
         f.write(']')
         f.write('\n')
         f.close()
+
+
+def write_grouping(path, groups):
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\grouping\\' + path, 'w') as file:
+        for g in groups:
+            file.write(str(g) + ', ')
+    file.close()
