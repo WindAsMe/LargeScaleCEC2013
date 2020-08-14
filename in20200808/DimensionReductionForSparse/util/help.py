@@ -77,50 +77,63 @@ def list_combination(l1, l2):
     return l1
 
 
-def group_related_variable(feature_names):
+def group_DFS(Dim, feature_names, max_variable_num):
     temp_feature_names = copy.deepcopy(feature_names)
+    groups_element = []
+    groups_index = []
 
-    groups = []
     while temp_feature_names:
         elements = temp_feature_names.pop(0)
-        group = [feature_names.index(elements)]
-        help_group_related_variable(group, elements, temp_feature_names, feature_names)
-        groups.append(group)
-    return groups
+        group_element = elements
+        group_index = [feature_names.index(elements)]
+        flag = [1]
+        for element in elements:
+            help_DFS(group_element, group_index, element, temp_feature_names, feature_names, flag, max_variable_num)
+
+        group_element = list(set(group_element))
+        interactions = []
+        for name in temp_feature_names:
+            interaction = [a for a in group_element if a in name]
+            if len(interaction) > 0:
+                interactions.append(name)
+        for name in interactions:
+            temp_feature_names.remove(name)
+
+        groups_element.append(group_element)
+        groups_index.append(group_index)
+
+    verify = []
+    for group in groups_element:
+        verify.extend(group)
+    for i in range(Dim):
+        if i not in verify:
+            groups_element.append([i])
+    return groups_element
 
 
-def help_group_related_variable(group, elements, temp_feature_names, feature_names):
-    i = -1
-    while temp_feature_names:
-        i += 1
-        if i >= len(temp_feature_names):
-            break
-        else:
-            if have_same_element(elements, temp_feature_names[i]):
-                pop = temp_feature_names.pop(i)
-                elements = list_combination(elements, pop)
-                group.append(feature_names.index(pop))
-                i -= 1
-                help_group_related_variable(group, pop, temp_feature_names, feature_names)
+def help_DFS(group_element, group_index, element, temp_feature_names, feature_names, flag, max_variable_num):
+    if flag[0] >= max_variable_num:
+        return
+    else:
+        i = -1
+        while temp_feature_names:
+            i += 1
+            if i >= len(temp_feature_names):
+                return
+            else:
+                if element in temp_feature_names[i]:
+                    temp_elements = temp_feature_names.pop(i)
+                    group_element.extend(temp_elements)
+                    group_index.append(feature_names.index(temp_elements))
 
-
-def group_modified(groups, feature_names):
-    new_groups = []
-    for group in groups:
-        new_group = []
-        for element in group:
-            new_group += feature_names[element]
-        new_groups.append(new_group)
-    return new_groups
-
-
-def extract(groups_modified):
-    simple_problems_Dim = []
-    simple_problems_Data_index = []
-    for group in groups_modified:
-        simple_problems_Dim.append(len(set(group)))
-        simple_problems_Data_index.append(list(set(group)))
-    return simple_problems_Dim, simple_problems_Data_index
+                    flag[0] = len(set(group_element))
+                    if flag[0] >= max_variable_num:
+                        return
+                    for temp_element in temp_elements:
+                        help_DFS(group_element, group_index, temp_element, temp_feature_names, feature_names, flag,
+                                 max_variable_num)
+                        if flag[0] >= max_variable_num:
+                            return
 
 
 def draw_obj(x1, x2, y1, y4, name):
@@ -172,8 +185,22 @@ def groups_random_create(Dim, groups_num=25, max_number=10):
     return groups
 
 
-def write_trace(fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\" + fileName
+def write_obj_trace(fileName, trace):
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\obj\\" + fileName
+    with open(full_path, 'a') as f:
+        f.write('[')
+        for i in range(len(trace)):
+            if i == len(trace) - 1:
+                f.write(str(trace[i]))
+            else:
+                f.write(str(trace[i]) + ', ')
+        f.write(']')
+        f.write('\n')
+        f.close()
+
+
+def write_var_trace(fileName, trace):
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\var\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):

@@ -21,8 +21,7 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, sca
     obj_traces = []
     for var_trace in var_traces:
         obj_traces.append(benchmark_function(var_trace, f_num))
-
-    return obj_traces, var_traces[len(var_traces)-1, :], iteration_times
+    return obj_traces, var_traces
 
 
 def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, function, benchmark, scale_range, group, max_min):
