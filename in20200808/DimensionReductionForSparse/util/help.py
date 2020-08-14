@@ -174,7 +174,7 @@ def groups_random_create(Dim, groups_num=25, max_number=10):
 
 def write_trace(fileName, trace):
     full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\" + fileName
-    with open(full_path, 'w') as f:
+    with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
             if i == len(trace) - 1:
