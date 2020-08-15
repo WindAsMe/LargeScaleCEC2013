@@ -1,14 +1,13 @@
 from in20200808.DimensionReductionForSparse.DE import MyProblem
-from in20200808.DimensionReductionForSparse.parameters import f_num
 import geatpy as ea
 import numpy as np
 
 
-def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, scale_range, function, groups, max_min):
+def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, scale_range, groups, max_min):
     var_traces = np.zeros((MAX_iteration, Dim))
     iteration_times = 0
     for i in range(len(groups)):
-        var_trace = help_SimpleProblemsOptimization(Dim, NIND, MAX_iteration, function, benchmark_function, scale_range,
+        var_trace = help_SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, scale_range,
                                                     groups[i], max_min)
         print('    Finished: ', i+1, '/', len(groups))
         iteration_times += len(var_trace) * NIND * len(groups[i])
@@ -20,12 +19,12 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, sca
 
     obj_traces = []
     for var_trace in var_traces:
-        obj_traces.append(benchmark_function(var_trace, f_num))
+        obj_traces.append(benchmark_function(var_trace))
     return obj_traces, var_traces
 
 
-def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, function, benchmark, scale_range, group, max_min):
-    problem = MyProblem.MySimpleProblem(Dimension, function, group, benchmark, scale_range, max_min)  # 实例化问题对象
+def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, scale_range, group, max_min):
+    problem = MyProblem.MySimpleProblem(Dimension,  group, benchmark, scale_range, max_min)  # 实例化问题对象
 
     """==============================种群设置==========================="""
     Encoding = 'RI'  # 编码方式
@@ -36,7 +35,7 @@ def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, function, be
     """===========================算法参数设置=========================="""
     population.initChrom(NIND)
 
-    myAlgorithm = ea.soea_DE_rand_1_L_templet(problem, population)
+    myAlgorithm = ea.soea_DE_best_1_L_templet(problem, population)
     myAlgorithm.MAXGEN = MAX_iteration
     myAlgorithm.mutOper.F = 0.5
     myAlgorithm.recOper.XOVR = 0.5
@@ -58,7 +57,7 @@ def ComplexProblemsOptimization(Dimension, NIND, MAX_iteration, function, benchm
     """===========================算法参数设置=========================="""
     population.initChrom(NIND)
 
-    myAlgorithm = ea.soea_DE_rand_1_L_templet(problem, population)
+    myAlgorithm = ea.soea_DE_best_1_L_templet(problem, population)
     myAlgorithm.MAXGEN = MAX_iteration
     myAlgorithm.mutOper.F = 0.5
     myAlgorithm.recOper.XOVR = 0.5

@@ -1,8 +1,9 @@
 import geatpy as ea
+import numpy as np
 
 
 class MySimpleProblem(ea.Problem):
-    def __init__(self, Dim, function, group, benchmark, scale_range, max_min):
+    def __init__(self, Dim, group, benchmark, scale_range, max_min):
         name = 'MyProblem'
         M = 1
         maxormins = [max_min]
@@ -13,12 +14,18 @@ class MySimpleProblem(ea.Problem):
         ubin = [1] * Dim
         self.Dim = Dim
         self.benchmark = benchmark
-        self.function = function
         self.group = group
         ea.Problem.__init__(self, name, M, maxormins, Dim, varTypes, lb, ub, lbin, ubin)
 
     def aimFunc(self, pop):  # 目标函数，pop为传入的种群对象
-        pop.ObjV = self.function(pop.Phen, self.benchmark, self.Dim, self.group)
+        for i in range(len(pop.Phen)):
+            for j in range(len(pop.Phen[i])):
+                if j not in self.group:
+                    pop.Phen[i][j] = 0
+        result = []
+        for p in pop.Phen:
+            result.append([self.benchmark(p)])
+        pop.ObjV = np.array(result)
 
 
 class MyComplexProblem(ea.Problem):
