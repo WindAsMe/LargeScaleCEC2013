@@ -185,8 +185,8 @@ def groups_random_create(Dim, groups_num=25, max_number=10):
     return groups
 
 
-def write_obj_trace(fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\obj\\" + fileName
+def write_obj_trace(path, fileName, trace):
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\obj\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -199,15 +199,18 @@ def write_obj_trace(fileName, trace):
         f.close()
 
 
-def write_var_trace(fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\var\\" + fileName
+def write_var_trace(path, fileName, trace):
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\var\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
-            if i == len(trace) - 1:
-                f.write(str(trace[i]))
-            else:
-                f.write(str(trace[i]) + ', ')
+            f.write('[')
+            for j in range(len(trace[i])):
+                if j == len(trace[i]) - 1:
+                    f.write(str(trace[i][j]) + ', ')
+                else:
+                    f.write(str(trace[i][j]))
+            f.write(']')
         f.write(']')
         f.write('\n')
         f.close()

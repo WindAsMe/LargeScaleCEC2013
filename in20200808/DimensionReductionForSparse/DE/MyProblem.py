@@ -29,7 +29,7 @@ class MySimpleProblem(ea.Problem):
 
 
 class MyComplexProblem(ea.Problem):
-    def __init__(self, Dim, function, benchmark, scale_range, max_min):
+    def __init__(self, Dim, benchmark, scale_range, max_min):
         name = 'MyProblem'
         M = 1
         maxormins = [max_min]
@@ -40,8 +40,10 @@ class MyComplexProblem(ea.Problem):
         ubin = [1] * Dim
         self.Dim = Dim
         self.benchmark = benchmark
-        self.function = function
         ea.Problem.__init__(self, name, M, maxormins, Dim, varTypes, lb, ub, lbin, ubin)
 
-    def aimFunc(self, pop):  # 目标函数，pop为传入的种群对象
-        pop.ObjV = self.function(pop.Phen, self.benchmark, self.Dim)
+    def aimFunc(self, pop):
+        result = []
+        for p in pop.Phen:
+            result.append([self.benchmark(p)])
+        pop.ObjV = np.array(result)
