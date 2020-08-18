@@ -55,4 +55,4 @@ def ComplexProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, scale
     myAlgorithm.drawing = 0
     """=====================调用算法模板进行种群进化====================="""
     [population, obj_trace, var_trace] = myAlgorithm.run()
-    return obj_trace
+    return obj_trace, var_trace
