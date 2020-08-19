@@ -5,7 +5,7 @@ from cec2013lsgo.cec2013 import Benchmark
 
 if __name__ == '__main__':
     Dim = 1000
-    func_num = 1
+    func_num = 3
     bench = Benchmark()
     benchmark_function = bench.get_function(func_num)
     benchmark_summary = bench.get_info(func_num)
