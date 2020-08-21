@@ -28,10 +28,11 @@ def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, s
     population = ea.Population(Encoding, Field, NIND)
 
     """===========================算法参数设置=========================="""
-    myAlgorithm = ea.soea_DE_best_1_L_templet(problem, population)
+    myAlgorithm = ea.soea_DE_currentToBest_1_L_templet(problem, population)
+    # soea_DE_targetToBest_1_L_templet
     myAlgorithm.MAXGEN = MAX_iteration
     myAlgorithm.mutOper.F = 0.5
-    myAlgorithm.recOper.XOVR = 0.5
+    myAlgorithm.recOper.XOVR = 0.9
     myAlgorithm.drawing = 0
     """=====================调用算法模板进行种群进化====================="""
     [population, obj_trace, var_trace] = myAlgorithm.run()
