@@ -20,12 +20,14 @@ class MySimpleProblem(ea.Problem):
         ea.Problem.__init__(self, name, M, maxormins, Dim, varTypes, lb, ub, lbin, ubin)
 
     def aimFunc(self, pop):  # 目标函数，pop为传入的种群对象
+        for i in range(len(self.optimized_variables)):
+            pop.Phen[:, self.optimized_variables[i]] = self.best_individual[self.optimized_variables[i]]
+
         for i in range(len(pop.Phen)):
             for j in range(len(pop.Phen[i])):
-                if j in self.optimized_variables:
-                    pop.Phen[i][j] = self.best_individual[j]
-                elif j not in self.group:
+                if j not in self.group and j not in self.optimized_variables:
                     pop.Phen[i][j] = 0
+
         result = []
         for p in pop.Phen:
             result.append([self.benchmark(p)])
