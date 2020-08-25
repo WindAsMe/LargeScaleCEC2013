@@ -3,7 +3,7 @@ import numpy as np
 
 
 class MySimpleProblem(ea.Problem):
-    def __init__(self, Dim, group, benchmark, scale_range, max_min):
+    def __init__(self, Dim, group, benchmark, scale_range, max_min, best_individual, optimized_variables):
         name = 'MyProblem'
         M = 1
         maxormins = [max_min]
@@ -15,12 +15,16 @@ class MySimpleProblem(ea.Problem):
         self.Dim = Dim
         self.benchmark = benchmark
         self.group = group
+        self.best_individual = best_individual
+        self.optimized_variables = optimized_variables
         ea.Problem.__init__(self, name, M, maxormins, Dim, varTypes, lb, ub, lbin, ubin)
 
     def aimFunc(self, pop):  # 目标函数，pop为传入的种群对象
         for i in range(len(pop.Phen)):
             for j in range(len(pop.Phen[i])):
-                if j not in self.group:
+                if j in self.optimized_variables:
+                    pop.Phen[i][j] = self.best_individual[j]
+                elif j not in self.group:
                     pop.Phen[i][j] = 0
         result = []
         for p in pop.Phen:
