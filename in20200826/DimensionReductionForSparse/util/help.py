@@ -145,7 +145,7 @@ def draw_obj(x, y1, y2, y3, name):
     plt.ylabel('Fitness')
     plt.legend()
     plt.savefig(
-        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\pic\\' + name + '_obj')
+        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200826\DimensionReductionForSparse\data\pic\\' + name + '_obj')
     plt.show()
 
 
@@ -159,7 +159,7 @@ def draw_var(x, y1, y4, name):
     plt.ylabel('value')
     plt.legend()
     plt.savefig(
-        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\pic\\' + name + '_var')
+        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200826\DimensionReductionForSparse\data\pic\\' + name + '_var')
     plt.show()
 
 
@@ -187,7 +187,7 @@ def groups_random_create(Dim, groups_num=25, max_number=10):
 
 
 def write_obj_trace(path, fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\obj\\" + path + "\\" + fileName
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200826\DimensionReductionForSparse\data\\trace\\obj\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -201,7 +201,7 @@ def write_obj_trace(path, fileName, trace):
 
 
 def write_var_trace(path, fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\data\\trace\\var\\" + path + "\\" + fileName
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200826\DimensionReductionForSparse\data\\trace\\var\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -218,7 +218,7 @@ def write_var_trace(path, fileName, trace):
 
 
 def write_grouping(path, groups):
-    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200808\DimensionReductionForSparse\grouping\\' + path, 'w') as file:
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200826\DimensionReductionForSparse\grouping\\' + path, 'w') as file:
         for g in groups:
             file.write(str(g) + ', ')
     file.close()

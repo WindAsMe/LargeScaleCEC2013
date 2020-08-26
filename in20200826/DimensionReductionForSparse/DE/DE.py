@@ -1,8 +1,8 @@
 from in20200826.DimensionReductionForSparse.DE import MyProblem
 from in20200826.DimensionReductionForSparse.util import help
-import random
 import geatpy as ea
 import numpy as np
+import copy
 
 
 def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, scale_range, groups, max_min):
@@ -31,7 +31,6 @@ def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, s
     Field = ea.crtfld(Encoding, problem.varTypes, problem.ranges, problem.borders)
     population = ea.Population(Encoding, Field, NIND)
     population.initChrom(NIND)
-    fitness_flag = []
 
     """===========================算法参数设置=========================="""
     var_traces = []
@@ -49,11 +48,12 @@ def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, s
 
         myAlgorithm.MAXGEN = 1
         myAlgorithm.mutOper.F = help.F(fp)
-        myAlgorithm.recOper.XOVR = 0.5
+        myAlgorithm.recOper.XOVR = 0.2
         myAlgorithm.drawing = 0
         """=====================调用算法模板进行种群进化====================="""
-        [population, obj_trace, var_trace] = myAlgorithm.run()
+        [pop, obj_trace, var_trace] = myAlgorithm.run()
         var_traces.append(var_trace[0])
+        population = copy.deepcopy(pop)
         # fitness_flag = obj_trace[:, 1]
         # print(fitness_flag.shape)
     return np.array(var_traces)
