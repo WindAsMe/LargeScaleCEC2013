@@ -224,7 +224,7 @@ def write_grouping(path, groups):
     file.close()
 
 
-def F(f):
+def F(f=0.5):
     U = random.uniform(0, 1)
     if U < f:
         return abs(random.gauss(0.5, 0.5))
@@ -232,7 +232,7 @@ def F(f):
         return abs(np.random.standard_t(1))
 
 
-def DE_choice():
+def DE_choice(f=0.5):
     if random.uniform(0, 1) < 0.5:
         return True
     else:
