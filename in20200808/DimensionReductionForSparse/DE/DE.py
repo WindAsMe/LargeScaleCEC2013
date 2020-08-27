@@ -6,12 +6,12 @@ import numpy as np
 
 
 def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, scale_range, groups, max_min):
-    var_traces = np.zeros((MAX_iteration, Dim))
+    var_traces = np.zeros((MAX_iteration + 1, Dim))
     based_population = np.zeros(Dim)
     for i in range(len(groups)):
         var_trace = help_SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, scale_range,
                                                     groups[i], max_min, based_population)
-        print('    Finished: ', i+1, '/', len(groups))
+        print('     Finished: ', i+1, '/', len(groups))
         for element in groups[i]:
             var_traces[:, element] = var_trace[:, element]
             based_population[groups[i]] = var_trace[len(var_trace) - 1, groups[i]]
@@ -23,6 +23,7 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, sca
 
 
 def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, scale_range, group, max_min, based_population):
+
     problem = MyProblem.MySimpleProblem(Dimension, group, benchmark, scale_range, max_min, NIND * len(group), based_population)  # 实例化问题对象
 
     """==============================种群设置==========================="""
@@ -33,38 +34,15 @@ def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, s
 
     """===========================算法参数设置=========================="""
 
-    if help.DE_choice():
-        myAlgorithm = ea.soea_DE_rand_1_L_templet(problem, population)
-    else:
-        myAlgorithm = ea.soea_DE_currentToBest_1_L_templet(problem, population)
+    myAlgorithm = ea.soea_DE_currentToBest_1_bin_templet(problem, population)
     # soea_DE_targetToBest_1_L_templet
     # soea_DE_currentToBest_1_bin_templet
-    myAlgorithm.MAXGEN = MAX_iteration
+    myAlgorithm.MAXGEN = MAX_iteration + 1
     myAlgorithm.mutOper.F = help.F(0.5)
-    print(myAlgorithm.mutOper.F)
+    # myAlgorithm.mutOper.F = 0.5
     myAlgorithm.recOper.XOVR = 0.5
     myAlgorithm.drawing = 0
     """=====================调用算法模板进行种群进化====================="""
     [population, obj_trace, var_trace] = myAlgorithm.run()
-    print(myAlgorithm.mutOper.F)
     return var_trace
 
-
-# def ComplexProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, scale_range, max_min):
-#     problem = MyProblem.MyComplexProblem(Dimension, benchmark, scale_range, max_min)  # 实例化问题对象
-#
-#     """==============================种群设置==========================="""
-#     Encoding = 'RI'  # 编码方式
-#     NIND = NIND  # 种群规模
-#     Field = ea.crtfld(Encoding, problem.varTypes, problem.ranges, problem.borders)
-#     population = ea.Population(Encoding, Field, NIND)
-#
-#     """===========================算法参数设置=========================="""
-#     myAlgorithm = ea.soea_DE_best_1_L_templet(problem, population)
-#     myAlgorithm.MAXGEN = MAX_iteration
-#     myAlgorithm.mutOper.F = 0.5
-#     myAlgorithm.recOper.XOVR = 0.5
-#     myAlgorithm.drawing = 0
-#     """=====================调用算法模板进行种群进化====================="""
-#     [population, obj_trace, var_trace] = myAlgorithm.run()
-#     return obj_trace[:, 1], var_trace

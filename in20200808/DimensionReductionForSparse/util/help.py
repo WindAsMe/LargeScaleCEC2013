@@ -136,10 +136,8 @@ def help_DFS(group_element, group_index, element, temp_feature_names, feature_na
                             return
 
 
-def draw_obj(x, y1, y2, y3, name):
+def draw_obj(x, y1, name):
     plt.plot(x, y1, label='LASSO Grouping')
-    plt.plot(x, y2, label='One Grouping')
-    plt.plot(x, y3, label='Random Grouping')
     # plt.plot(x, y4, label='Normal')
     plt.xlabel('Evaluation times')
     plt.ylabel('Fitness')
