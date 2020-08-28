@@ -33,5 +33,7 @@ class MySimpleProblem(ea.Problem):
             result.append([self.benchmark(p)])
 
         pop.Phen = temp_Phen
-        pop.ObjV = np.array(result)
         pop.Chrom = temp_Phen
+        pop.ObjV = np.array(result)
+        # print('pop.Phen: ', pop.Phen)
+        # print('pop.ObjV: ', min(pop.ObjV))

@@ -1,6 +1,5 @@
 from in20200808.DimensionReductionForSparse.DE import MyProblem
 from in20200808.DimensionReductionForSparse.util import help
-import random
 import geatpy as ea
 import numpy as np
 
@@ -8,6 +7,7 @@ import numpy as np
 def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, scale_range, groups, max_min):
     var_traces = np.zeros((MAX_iteration + 1, Dim))
     based_population = np.zeros(Dim)
+
     for i in range(len(groups)):
         var_trace = help_SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, scale_range,
                                                     groups[i], max_min, based_population)
@@ -16,6 +16,11 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark_function, sca
             var_traces[:, element] = var_trace[:, element]
             based_population[groups[i]] = var_trace[len(var_trace) - 1, groups[i]]
 
+        d = []
+        for p in var_traces:
+            d.append(benchmark_function(p))
+        x = np.linspace(0, 3000000, 31, endpoint=False)
+        help.draw_obj(x, d, 'temp')
     obj_traces = []
     for var_trace in var_traces:
         obj_traces.append(benchmark_function(var_trace))
@@ -39,6 +44,7 @@ def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, s
     # soea_DE_currentToBest_1_bin_templet
     myAlgorithm.MAXGEN = MAX_iteration + 1
     myAlgorithm.mutOper.F = help.F(0.5)
+    print(myAlgorithm.mutOper.F)
     # myAlgorithm.mutOper.F = 0.5
     myAlgorithm.recOper.XOVR = 0.5
     myAlgorithm.drawing = 0

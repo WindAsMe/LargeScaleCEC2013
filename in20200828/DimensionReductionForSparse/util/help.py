@@ -236,11 +236,16 @@ def DE_choice(f=0.5):
         return False
 
 
-def set_Chrom_zero(pop, group):
+def set_Chrom_zero(pop, group, benchmark):
     for i in range(len(pop.Chrom)):
         for j in range(len(pop.Chrom[i])):
             if j not in group:
                 pop.Chrom[i][j] = 0
+    pop.Phen = pop.Chrom
+    obj_v = []
+    for p in pop.Phen:
+        obj_v.append(benchmark(p))
+    pop.ObjV = np.array(obj_v)
 
 
 def preserve(var_traces, benchmark_function):
@@ -251,3 +256,4 @@ def preserve(var_traces, benchmark_function):
         if r[i] < r[i + 1]:
             var_traces[i + 1] = var_traces[i]
     return var_traces
+
