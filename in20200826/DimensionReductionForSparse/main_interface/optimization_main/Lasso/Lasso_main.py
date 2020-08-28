@@ -1,6 +1,7 @@
 from in20200826.DimensionReductionForSparse.util import help
 from in20200826.DimensionReductionForSparse.DE import DE
 from cec2013lsgo.cec2013 import Benchmark
+import numpy as np
 
 
 if __name__ == '__main__':
@@ -31,3 +32,5 @@ if __name__ == '__main__':
                                                                                scale_range, groups_Lasso, max_or_min)
         help.write_obj_trace(name, 'LASSO', best_Lasso_obj_trace)
         help.write_var_trace(name, 'LASSO', best_Lasso_index)
+        x = np.linspace(0, 3000000, 30, endpoint=False)
+        help.draw_obj(x, best_Lasso_obj_trace, 'temp')

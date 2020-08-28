@@ -142,7 +142,7 @@ def draw_obj(x, y1, name):
     plt.ylabel('Fitness')
     plt.legend()
     plt.savefig(
-        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200826\DimensionReductionForSparse\data\pic\\' + name + '_obj')
+        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\pic\\' + name + '_obj')
     plt.show()
 
 
@@ -156,7 +156,7 @@ def draw_var(x, y1, y4, name):
     plt.ylabel('value')
     plt.legend()
     plt.savefig(
-        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200826\DimensionReductionForSparse\data\pic\\' + name + '_var')
+        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\pic\\' + name + '_var')
     plt.show()
 
 
@@ -184,7 +184,7 @@ def groups_random_create(Dim, groups_num=25, max_number=10):
 
 
 def write_obj_trace(path, fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200826\DimensionReductionForSparse\data\\trace\\obj\\" + path + "\\" + fileName
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\obj\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -198,7 +198,7 @@ def write_obj_trace(path, fileName, trace):
 
 
 def write_var_trace(path, fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200826\DimensionReductionForSparse\data\\trace\\var\\" + path + "\\" + fileName
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\var\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -215,7 +215,7 @@ def write_var_trace(path, fileName, trace):
 
 
 def write_grouping(path, groups):
-    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200826\DimensionReductionForSparse\grouping\\' + path, 'w') as file:
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\grouping\\' + path, 'w') as file:
         for g in groups:
             file.write(str(g) + ', ')
     file.close()
@@ -241,3 +241,13 @@ def set_Chrom_zero(pop, group):
         for j in range(len(pop.Chrom[i])):
             if j not in group:
                 pop.Chrom[i][j] = 0
+
+
+def preserve(var_traces, benchmark_function):
+    r = []
+    for v in var_traces:
+        r.append(benchmark_function(v))
+    for i in range(len(r) - 1):
+        if r[i] < r[i + 1]:
+            var_traces[i + 1] = var_traces[i]
+    return var_traces
