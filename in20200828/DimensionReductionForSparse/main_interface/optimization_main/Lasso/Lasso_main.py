@@ -20,8 +20,8 @@ if __name__ == '__main__':
     """The next is DE optimization"""
     # Why in first generation has the gap?
     # Because the grouping strategy firstly do the best features combination in initial population
-    simple_population_size = 100
-    simple_MAX_iteration = 30
+    simple_population_size = 29
+    simple_MAX_iteration = 100
     test_times = 1
     max_or_min = 1
 
@@ -32,5 +32,5 @@ if __name__ == '__main__':
                                                                                scale_range, groups_Lasso, max_or_min)
         help.write_obj_trace(name, 'LASSO', best_Lasso_obj_trace)
         help.write_var_trace(name, 'LASSO', best_Lasso_index)
-        x = np.linspace(0, 3000000, 30, endpoint=False)
+        x = np.linspace(0, 3000000, simple_MAX_iteration, endpoint=False)
         help.draw_obj(x, best_Lasso_obj_trace, 'temp')

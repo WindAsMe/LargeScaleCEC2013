@@ -224,7 +224,7 @@ def write_grouping(path, groups):
 def F(f=0.5):
     U = random.uniform(0, 1)
     if U < f:
-        return abs(random.gauss(0.5, 0.5))
+        return abs(random.gauss(0.5, 0.3))
     else:
         return abs(np.random.standard_t(1))
 
