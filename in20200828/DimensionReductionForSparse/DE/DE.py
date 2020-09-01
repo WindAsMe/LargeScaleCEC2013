@@ -12,18 +12,15 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark, scale_range,
                                                     groups[i], max_min, based_population)
         # print(var_trace.shape)
         print('    Finished: ', i + 1, '/', len(groups))
+        # print(np.argmin(obj_trace[:, 1]))
         for element in groups[i]:
             var_traces[:, element] = var_trace[:, element]
-            based_population[element] = var_trace[len(var_trace) - 1, element]
+            based_population[element] = var_trace[np.argmin(obj_trace[:, 1]), element]
 
         # x = np.linspace(0, 3000000, MAX_iteration, endpoint=False)
         # help.draw_obj(x, obj_trace[:, 1], 'temp')
 
-    # var_traces = help.preserve(var_traces, benchmark)
-    obj_traces = []
-    for var_trace in var_traces:
-        obj_traces.append(benchmark(var_trace))
-
+    var_traces, obj_traces = help.preserve(var_traces, benchmark)
     return obj_traces, var_traces
 
 
@@ -47,7 +44,7 @@ def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, s
     myAlgorithm.recOper.XOVR = 0.5
     myAlgorithm.drawing = 0
     """=====================调用算法模板进行种群进化====================="""
-    [population, obj_trace, var_trace] = myAlgorithm.run(population)
+    [population, obj_trace, var_trace] = myAlgorithm.run(population, MAX_iteration)
     # obj_traces.append(obj_trace[0])
     return var_trace, obj_trace
 

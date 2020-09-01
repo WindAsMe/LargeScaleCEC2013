@@ -230,7 +230,7 @@ def F(f=0.5):
 
 
 def DE_choice(f=0.5):
-    if random.uniform(0, 1) < 0.5:
+    if random.uniform(0, 1) < f:
         return True
     else:
         return False
@@ -249,11 +249,31 @@ def set_Chrom_zero(pop, group, benchmark):
 
 
 def preserve(var_traces, benchmark_function):
-    r = []
+    obj_traces = []
     for v in var_traces:
-        r.append(benchmark_function(v))
-    for i in range(len(r) - 1):
-        if r[i] < r[i + 1]:
+        obj_traces.append(benchmark_function(v))
+    for i in range(len(obj_traces) - 1):
+        if obj_traces[i] < obj_traces[i + 1]:
             var_traces[i + 1] = var_traces[i]
-    return var_traces
+            obj_traces[i + 1] = obj_traces[i]
+    return var_traces, obj_traces
 
+
+def same_elements_in_population(pop1, pop2):
+    ns = 0
+    nf = 0
+    for chrom in pop1.Chrom:
+        if chrom in pop2.Chrom:
+            ns += 1
+        else:
+            nf += 1
+    return ns, nf
+
+
+def CRm(CR=0.5):
+    C = random.gauss(CR, 0.1)
+    if C >= 1:
+        C = 0.8
+    if C <= 0:
+        C = 0.2
+    return C
