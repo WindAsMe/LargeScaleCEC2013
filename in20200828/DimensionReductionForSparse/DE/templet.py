@@ -37,6 +37,7 @@ class soea_SaNSDE_templet(ea.SoeaAlgorithm):
         CRrec = []
         CR = 0.5
         while not self.terminated(population):
+            print(min(population.ObjV))
             self.mutOper = ea.Mutde(F=help.F(fp))
             temp_CR = help.CRm(CR)
             self.recOper = ea.Xovexp(XOVR=help.CRm(temp_CR), Half=True)  # 生成指数交叉算子对象，这里的XOVR即为DE中的Cr
@@ -48,6 +49,10 @@ class soea_SaNSDE_templet(ea.SoeaAlgorithm):
                 if len(CRrec) > 0:
                     CR = sum(CRrec) / len(CRrec)
                     CRrec.clear()
+                ns1 = 0
+                ns2 = 0
+                nf1 = 0
+                nf2 = 0
 
             if help.DE_choice(p):
                 """DE/rand/1/L"""

@@ -17,9 +17,9 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark, scale_range,
             var_traces[:, element] = var_trace[:, element]
             based_population[element] = var_trace[np.argmin(obj_trace[:, 1]), element]
 
-        # x = np.linspace(0, 3000000, MAX_iteration, endpoint=False)
+        # x = np.linspace(0, len(groups[i]) * MAX_iteration * NIND, MAX_iteration)
         # help.draw_obj(x, obj_trace[:, 1], 'temp')
-
+        # print(obj_trace[:, 1])
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
     return obj_traces, var_traces
 
@@ -38,13 +38,13 @@ def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, s
 
     """===========================算法参数设置=========================="""
 
-    myAlgorithm = templet.soea_SaNSDE_templet(problem, population)
+    # myAlgorithm = templet.soea_SaNSDE_templet(problem, population)'
+    myAlgorithm = ea.soea_DE_currentToBest_1_bin_templet(problem, population)
     myAlgorithm.MAXGEN = MAX_iteration
-    myAlgorithm.mutOper.F = 0.5
-    myAlgorithm.recOper.XOVR = 0.5
     myAlgorithm.drawing = 0
     """=====================调用算法模板进行种群进化====================="""
-    [population, obj_trace, var_trace] = myAlgorithm.run(population, MAX_iteration)
+    # [population, obj_trace, var_trace] = myAlgorithm.run(population, MAX_iteration)
+    [population, obj_trace, var_trace] = myAlgorithm.run(population)
     # obj_traces.append(obj_trace[0])
     return var_trace, obj_trace
 
