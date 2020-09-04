@@ -277,3 +277,12 @@ def CRm(CR=0.5):
     if C <= 0:
         C = 0.2
     return C
+
+
+def self_adaptive_F(g, G, f=0.5):
+    return f * 2 ** (np.e ** (1 - ((G) / (G + 1 - g))))
+
+
+def high_low_F(high, low, iteration, Max_iteration):
+    d = (high - low) / Max_iteration
+    return low + iteration * d

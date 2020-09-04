@@ -19,7 +19,6 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark, scale_range,
 
         # x = np.linspace(0, len(groups[i]) * MAX_iteration * NIND, MAX_iteration)
         # help.draw_obj(x, obj_trace[:, 1], 'temp')
-        # print(obj_trace[:, 1])
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
     return obj_traces, var_traces
 
@@ -38,8 +37,8 @@ def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, s
 
     """===========================算法参数设置=========================="""
 
-    # myAlgorithm = templet.soea_SaNSDE_templet(problem, population)'
-    myAlgorithm = ea.soea_DE_currentToBest_1_bin_templet(problem, population)
+    # myAlgorithm = templet.soea_SaNSDE_templet(problem, population)
+    myAlgorithm = ea.soea_SGA_templet(problem, population)
     myAlgorithm.MAXGEN = MAX_iteration
     myAlgorithm.drawing = 0
     """=====================调用算法模板进行种群进化====================="""

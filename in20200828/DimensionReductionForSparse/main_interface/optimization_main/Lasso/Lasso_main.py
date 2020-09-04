@@ -21,8 +21,8 @@ if __name__ == '__main__':
     """The next is DE optimization"""
     # Why in first generation has the gap?
     # Because the grouping strategy firstly do the best features combination in initial population
-    simple_population_size = 300
-    simple_MAX_iteration = 10
+    simple_population_size = 30
+    simple_MAX_iteration = 99
     test_times = 1
     max_or_min = 1
 
