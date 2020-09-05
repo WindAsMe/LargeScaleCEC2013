@@ -31,4 +31,4 @@ if __name__ == '__main__':
         help.write_obj_trace(name, 'Normal', best_Normal_obj_trace)
         help.write_var_trace(name, 'Normal', best_Normal_index)
         x = np.linspace(0, 3000000, simple_MAX_iteration)
-        help.draw_obj(x, best_Normal_obj_trace, 'temp')
+        help.draw_obj(x, best_Normal_obj_trace, 'Normal', 'temp')

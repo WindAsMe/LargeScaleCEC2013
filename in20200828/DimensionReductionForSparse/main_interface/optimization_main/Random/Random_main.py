@@ -32,4 +32,4 @@ if __name__ == '__main__':
         help.write_obj_trace(name, 'Random', best_Random_obj_trace)
         help.write_var_trace(name, 'Random', best_Random_index)
         x = np.linspace(0, 3000000, simple_MAX_iteration)
-        help.draw_obj(x, best_Random_obj_trace, 'temp')
+        help.draw_obj(x, best_Random_obj_trace, 'Random Grouping','temp')

@@ -136,8 +136,8 @@ def help_DFS(group_element, group_index, element, temp_feature_names, feature_na
                             return
 
 
-def draw_obj(x, y1, name):
-    plt.plot(x, y1, label='LASSO Grouping')
+def draw_obj(x, y1, label, name):
+    plt.plot(x, y1, label=label)
     plt.xlabel('Evaluation times')
     plt.ylabel('Fitness')
     plt.legend()
@@ -286,3 +286,16 @@ def self_adaptive_F(g, G, f=0.5):
 def high_low_F(high, low, iteration, Max_iteration):
     d = (high - low) / Max_iteration
     return low + iteration * d
+
+
+def draw_summary(x, y1, y2, y3, y4, name):
+    plt.plot(x, y1, label='LASSO Grouping')
+    plt.plot(x, y2, label='Normal')
+    plt.plot(x, y3, label='One Grouping')
+    plt.plot(x, y4, label='Random Grouping')
+    plt.xlabel('Evaluation times')
+    plt.ylabel('Fitness')
+    plt.legend()
+    plt.savefig(
+        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\pic\\' + name + '_obj')
+    plt.show()
