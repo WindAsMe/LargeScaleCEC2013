@@ -6,7 +6,7 @@ import numpy as np
 
 if __name__ == '__main__':
     Dim = 1000
-    func_num = 6
+    func_num = 7
     bench = Benchmark()
     benchmark_function = bench.get_function(func_num)
     benchmark_summary = bench.get_info(func_num)

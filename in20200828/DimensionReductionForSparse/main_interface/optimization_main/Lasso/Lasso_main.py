@@ -1,12 +1,12 @@
 from in20200828.DimensionReductionForSparse.util import help
 from in20200828.DimensionReductionForSparse.DE import DE
-import numpy as np
 from cec2013lsgo.cec2013 import Benchmark
+import numpy as np
 
 
 if __name__ == '__main__':
     Dim = 1000
-    func_num = 7
+    func_num = 8
     bench = Benchmark()
     benchmark_function = bench.get_function(func_num)
     benchmark_summary = bench.get_info(func_num)
