@@ -299,3 +299,10 @@ def draw_summary(x, y1, y2, y3, y4, name):
     plt.savefig(
         'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\pic\\' + name + '_obj')
     plt.show()
+
+
+def group_Normal(Dim=1000):
+    group = []
+    for i in range(Dim):
+        group.append(i)
+    return [group]

@@ -47,25 +47,3 @@ def help_SimpleProblemsOptimization(Dimension, NIND, MAX_iteration, benchmark, s
     # obj_traces.append(obj_trace[0])
     return var_trace, obj_trace
 
-
-def ComplexProblemsOptimization(Dim, NIND, MAX_iteration, benchmark, scale_range, max_min):
-    problem = MyProblem.MyComplexProblem(Dim, benchmark, scale_range, max_min)  # 实例化问题对象
-
-    """==============================种群设置==========================="""
-    Encoding = 'RI'  # 编码方式
-    NIND = NIND
-    Field = ea.crtfld(Encoding, problem.varTypes, problem.ranges, problem.borders)
-    population = ea.Population(Encoding, Field, NIND)
-    population.initChrom(NIND)
-
-    """===========================算法参数设置=========================="""
-
-    # myAlgorithm = templet.soea_SaNSDE_templet(problem, population)
-    myAlgorithm = ea.soea_DE_currentToBest_1_L_templet(problem, population)
-    myAlgorithm.MAXGEN = MAX_iteration
-    myAlgorithm.drawing = 0
-    """=====================调用算法模板进行种群进化====================="""
-    # [population, obj_trace, var_trace] = myAlgorithm.run(population, MAX_iteration)
-    [population, obj_trace, var_trace] = myAlgorithm.run(population)
-    # obj_traces.append(obj_trace[0])
-    return obj_trace[:, 1], var_trace
