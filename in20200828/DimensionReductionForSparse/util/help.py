@@ -155,8 +155,8 @@ def draw_var(x, y1, y4, name):
     plt.xlabel('coordinate')
     plt.ylabel('value')
     plt.legend()
-    plt.savefig(
-        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\pic\\' + name + '_var')
+    # plt.savefig(
+    #     'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\pic\\' + name + '_var')
     plt.show()
 
 
