@@ -293,6 +293,7 @@ def draw_summary(x, y1, y2, y3, y4, name):
     plt.plot(x, y2, label='Normal')
     plt.plot(x, y3, label='One Grouping')
     plt.plot(x, y4, label='Random Grouping')
+
     plt.xlabel('Evaluation times')
     plt.ylabel('Fitness')
     plt.legend()
