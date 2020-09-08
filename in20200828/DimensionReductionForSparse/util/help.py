@@ -142,7 +142,7 @@ def draw_obj(x, y1, label, name):
     plt.ylabel('Fitness')
     plt.legend()
     plt.savefig(
-        'C:\\Users\86150\Desktop\LargeScaleCEC2013-master\in20200808\DimensionReductionForSparse\data\pic\\' + name + '_obj')
+        'C:\\Users\86150\Desktop\LargeScaleCEC2013-master\in20200828\DimensionReductionForSparse\data\pic\\' + name + '_obj')
     plt.show()
 
 
@@ -184,7 +184,7 @@ def groups_random_create(Dim, groups_num=25, max_number=10):
 
 
 def write_obj_trace(path, fileName, trace):
-    full_path = "C:\\Users\86150\Desktop\LargeScaleCEC2013-master\in20200808\DimensionReductionForSparse\data\\trace\\obj\\" + path + "\\" + fileName
+    full_path = "C:\\Users\86150\Desktop\LargeScaleCEC2013-master\in20200828\DimensionReductionForSparse\data\\trace\\obj\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -198,7 +198,7 @@ def write_obj_trace(path, fileName, trace):
 
 
 def write_var_trace(path, fileName, trace):
-    full_path = "C:\\Users\86150\Desktop\LargeScaleCEC2013-master\in20200808\DimensionReductionForSparse\data\\trace\\var\\" + path + "\\" + fileName
+    full_path = "C:\\Users\86150\Desktop\LargeScaleCEC2013-master\in20200828\DimensionReductionForSparse\data\\trace\\var\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -298,7 +298,7 @@ def draw_summary(x, y1, y2, y3, y4, name):
     plt.ylabel('Fitness')
     plt.legend()
     plt.savefig(
-        'C:\\Users\86150\Desktop\LargeScaleCEC2013-master\in20200808\DimensionReductionForSparse\data\pic\\' + name + '_obj')
+        'C:\\Users\86150\Desktop\LargeScaleCEC2013-master\in20200828\DimensionReductionForSparse\data\pic\\' + name + '_obj')
     plt.show()
 
 

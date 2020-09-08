@@ -29,6 +29,7 @@ if __name__ == '__main__':
         best_One_obj_trace, best_One_index = DE.SimpleProblemsOptimization(Dim, simple_population_size,
                                                                                simple_MAX_iteration, benchmark_function,
                                                                                scale_range, groups_One, max_or_min)
+
         help.write_obj_trace(name, 'One', best_One_obj_trace)
         help.write_var_trace(name, 'One', best_One_index)
         x = np.linspace(0, 3000000, simple_MAX_iteration)
