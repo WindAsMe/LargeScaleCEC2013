@@ -11,7 +11,7 @@ def SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark, scale_range,
         var_trace, obj_trace = help_SimpleProblemsOptimization(Dim, NIND, MAX_iteration, benchmark, scale_range,
                                                     groups[i], max_min, based_population)
         # print(var_trace.shape)
-        print('    Finished: ', i + 1, '/', len(groups))
+        # print('    Finished: ', i + 1, '/', len(groups))
         # print(np.argmin(obj_trace[:, 1]))
         for element in groups[i]:
             var_traces[:, element] = var_trace[:, element]

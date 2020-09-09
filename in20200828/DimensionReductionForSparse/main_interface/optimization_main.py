@@ -6,7 +6,7 @@ from in20200828.DimensionReductionForSparse.main_interface.optimization_f.Random
 # for i in range(10):
 #     Lasso_f.f()
 
-for i in range(9):
+for i in range(7):
     Normal_f.f()
 
 for i in range(8):
