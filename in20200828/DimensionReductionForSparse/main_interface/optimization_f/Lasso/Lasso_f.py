@@ -31,6 +31,5 @@ def f():
                                                                                simple_MAX_iteration, benchmark_function,
                                                                                scale_range, groups_Lasso, max_or_min)
         help.write_obj_trace(name, 'LASSO', best_Lasso_obj_trace)
-        help.write_var_trace(name, 'LASSO', best_Lasso_index)
         x = np.linspace(0, 3000000, simple_MAX_iteration)
         help.draw_obj(x, best_Lasso_obj_trace, 'LASSO Grouping', 'temp')

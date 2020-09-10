@@ -30,6 +30,5 @@ def f():
                                                                                simple_MAX_iteration, benchmark_function,
                                                                                scale_range, groups_Random, max_or_min)
         help.write_obj_trace(name, 'Random', best_Random_obj_trace)
-        help.write_var_trace(name, 'Random', best_Random_index)
         x = np.linspace(0, 3000000, simple_MAX_iteration)
-        help.draw_obj(x, best_Random_obj_trace, 'Random Grouping','temp')
+        help.draw_obj(x, best_Random_obj_trace, 'Random Grouping', 'temp')

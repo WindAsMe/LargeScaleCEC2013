@@ -30,6 +30,5 @@ def f():
                                                                                simple_MAX_iteration, benchmark_function,
                                                                                scale_range, groups_One, max_or_min)
         help.write_obj_trace(name, 'One', best_One_obj_trace)
-        help.write_var_trace(name, 'One', best_One_index)
         x = np.linspace(0, 3000000, simple_MAX_iteration)
         help.draw_obj(x, best_One_obj_trace, 'One Grouping', 'temp')

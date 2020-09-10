@@ -290,7 +290,7 @@ def high_low_F(high, low, iteration, Max_iteration):
 
 def draw_summary(x, y1, y2, y3, y4, name):
     plt.plot(x, y1, label='LASSO Grouping')
-    # plt.plot(x, y2, label='Normal')
+    plt.plot(x, y2, label='Normal')
     plt.plot(x, y3, label='One Grouping')
     plt.plot(x, y4, label='Random Grouping')
 
@@ -307,3 +307,18 @@ def group_Normal(Dim=1000):
     for i in range(Dim):
         group.append(i)
     return [group]
+
+
+def write_final(d1, d2, d3, d4):
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\final\\LASSO', 'a') as file:
+        file.write(str(d1) + ', ')
+    file.close()
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\final\\Normal', 'a') as file:
+        file.write(str(d2) + ', ')
+    file.close()
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\final\\One', 'a') as file:
+        file.write(str(d3) + ', ')
+    file.close()
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\final\\Random', 'a') as file:
+        file.write(str(d4) + ', ')
+    file.close()
