@@ -6,7 +6,7 @@ import numpy as np
 
 def f():
     Dim = 1000
-    func_num = 10
+    func_num = 11
     bench = Benchmark()
     benchmark_function = bench.get_function(func_num)
     benchmark_summary = bench.get_info(func_num)
