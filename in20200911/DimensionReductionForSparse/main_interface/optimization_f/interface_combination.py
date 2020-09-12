@@ -16,8 +16,8 @@ def f(Dim, func_num, NIND, MAX_iteration, scale_range, groups, initial_populatio
     # Why in first generation has the gap?
     # Because the Grouping_0.1 strategy firstly do the best features combination in initial population
 
-    best_Lasso_obj_trace, best_Lasso_index = DE.ProblemsOptimization(Dim, NIND, MAX_iteration, function, scale_range,
+    best_obj_trace, best_index = DE.ProblemsOptimization(Dim, NIND, MAX_iteration, function, scale_range,
                                                                      groups, initial_population)
-    help.write_obj_trace(name, method, best_Lasso_obj_trace)
+    help.write_obj_trace(name, method, best_obj_trace)
     x = np.linspace(60000, 3000000, MAX_iteration)
-    help.draw_obj(x, best_Lasso_obj_trace, method + 'Grouping', 'temp')
+    help.draw_obj(x, best_obj_trace, method + 'Grouping', 'temp')
