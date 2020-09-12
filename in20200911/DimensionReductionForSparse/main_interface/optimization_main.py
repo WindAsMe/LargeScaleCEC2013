@@ -11,7 +11,6 @@ if __name__ == '__main__':
         MAX_iteration = 100
         NIND = 30
         bench = Benchmark()
-        benchmark_function = bench.get_function(func_num)
         benchmark_summary = bench.get_info(func_num)
 
         scale_range = [benchmark_summary['lower'], benchmark_summary['upper']]
