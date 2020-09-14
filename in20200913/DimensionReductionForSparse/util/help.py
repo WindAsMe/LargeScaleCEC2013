@@ -131,7 +131,7 @@ def draw_obj(x, y1, label, name):
     plt.ylabel('Fitness')
     plt.legend()
     plt.savefig(
-        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\pic\\' + name + '_obj')
+        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\pic\\' + name + '_obj')
     plt.show()
 
 
@@ -166,7 +166,7 @@ def groups_Normal(Dim=1000):
 
 
 def write_obj_trace(path, fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\obj\\" + path + "\\" + fileName
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\obj\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -180,7 +180,7 @@ def write_obj_trace(path, fileName, trace):
 
 
 def write_var_trace(path, fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\var\\" + path + "\\" + fileName
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\var\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -197,7 +197,7 @@ def write_var_trace(path, fileName, trace):
 
 
 def write_grouping(path, groups):
-    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\grouping\\' + path, 'w') as file:
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\grouping\\' + path, 'w') as file:
         for g in groups:
             file.write(str(g) + ', ')
     file.close()
@@ -276,24 +276,21 @@ def draw_summary(x, y1, y2, y3, y4, name):
     plt.ylabel('Fitness')
     plt.legend()
     plt.savefig(
-        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\pic\\' + name + '_obj')
+        'D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\pic\\' + name + '_obj')
     plt.show()
 
 
-
-
-
 def write_final(d1, d2, d3, d4):
-    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\final\\LASSO', 'a') as file:
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\final\\LASSO', 'a') as file:
         file.write(str(d1) + ', ')
     file.close()
-    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\final\\Normal', 'a') as file:
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\final\\Normal', 'a') as file:
         file.write(str(d2) + ', ')
     file.close()
-    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\final\\One', 'a') as file:
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\final\\One', 'a') as file:
         file.write(str(d3) + ', ')
     file.close()
-    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200828\DimensionReductionForSparse\data\\trace\\final\\Random', 'a') as file:
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\final\\Random', 'a') as file:
         file.write(str(d4) + ', ')
     file.close()
 

@@ -20,8 +20,8 @@ def ProblemsOptimization(Dim, NIND, MAX_iteration, benchmark, scale_range, group
             var_traces[:, element] = var_trace[:, groups[i].index(element)]
             based_population[element] = var_trace[np.argmin(obj_trace[:, 1]), groups[i].index(element)]
 
-        x = np.linspace(0, len(groups[i]) * MAX_iteration * NIND, MAX_iteration)
-        help.draw_obj(x, obj_trace[:, 1], 'method', 'temp')
+        # x = np.linspace(0, len(groups[i]) * MAX_iteration * NIND, MAX_iteration)
+        # help.draw_obj(x, obj_trace[:, 1], 'method', 'temp')
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
     return var_traces, obj_traces
 
