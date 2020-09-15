@@ -28,7 +28,6 @@ class soea_currentToBest_templet(ea.SoeaAlgorithm):
         #     population = (prophetPop + population)[:NIND] # 插入先知种群
         population.FitnV = ea.scaling(population.ObjV, population.CV, self.problem.maxormins)  # 计算适应度
         # ===========================开始进化============================
-
         while not self.terminated(population):
 
             # 进行差分进化操作

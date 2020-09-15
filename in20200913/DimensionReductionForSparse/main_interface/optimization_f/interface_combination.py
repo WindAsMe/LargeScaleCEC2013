@@ -19,5 +19,5 @@ def f(Dim, func_num, NIND, MAX_iteration, scale_range, groups, initial_populatio
     best_index, best_obj_trace = DE.ProblemsOptimization(Dim, NIND, MAX_iteration, function, scale_range,
                                                                      groups, initial_population)
     help.write_obj_trace(name, method, best_obj_trace)
-    x = np.linspace(60000, 3000000, MAX_iteration)
-    help.draw_obj(x, best_obj_trace, method + 'Grouping', 'temp')
+    x = np.linspace(0, 3000000, MAX_iteration)
+    help.draw_obj(x, best_obj_trace, method + ' Grouping', 'temp')
