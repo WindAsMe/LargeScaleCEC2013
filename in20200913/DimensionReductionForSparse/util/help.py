@@ -267,15 +267,15 @@ def high_low_F(high, low, iteration, Max_iteration):
 
 
 def draw_summary(x, y1, y2, y3, y4, name):
-    plt.semilogy(x, y1, label='LASSO Grouping')
-    plt.semilogy(x, y2, label='Normal')
-    plt.semilogy(x, y3, label='One Grouping')
-    plt.semilogy(x, y4, label='Random Grouping')
+    # plt.semilogy(x, y1, label='LASSO Grouping')
+    # plt.semilogy(x, y2, label='Normal')
+    # plt.semilogy(x, y3, label='One Grouping')
+    # plt.semilogy(x, y4, label='Random Grouping')
 
-    # plt.plot(x, y1, label='LASSO Grouping')
-    # plt.plot(x, y2, label='Normal')
-    # plt.plot(x, y3, label='One Grouping')
-    # plt.plot(x, y4, label='Random Grouping')
+    plt.plot(x, y1, label='LASSO Grouping')
+    plt.plot(x, y2, label='Normal')
+    plt.plot(x, y3, label='One Grouping')
+    plt.plot(x, y4, label='Random Grouping')
 
     plt.xlabel('Evaluation times')
     plt.ylabel('Fitness')
@@ -308,3 +308,15 @@ def population_initialization(Dim, scale_range, size):
             temp.append(random.uniform(scale_range[0], scale_range[1]))
         population.append(temp)
     return np.array(population)
+
+
+def write_elite(data, func_name):
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\elite\\' + func_name, 'a') as file:
+        file.write('[')
+        for i in range(len(data)):
+            if i != len(data) - 1:
+                file.write(str(data[i]) + ', ')
+            else:
+                file.write(str(data[i]))
+        file.write(']')
+    file.close()
