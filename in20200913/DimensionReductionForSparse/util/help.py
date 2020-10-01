@@ -267,15 +267,15 @@ def high_low_F(high, low, iteration, Max_iteration):
 
 
 def draw_summary(x, y1, y2, y3, y4, name):
-    plt.semilogy(x, y1, label='LASSO Grouping')
-    plt.semilogy(x, y2, label='Normal')
-    plt.semilogy(x, y3, label='One Grouping')
-    plt.semilogy(x, y4, label='Random Grouping')
+    # plt.semilogy(x, y1, label='LASSO Grouping')
+    # plt.semilogy(x, y2, label='Normal')
+    # plt.semilogy(x, y3, label='One Grouping')
+    # plt.semilogy(x, y4, label='Random Grouping')
 
-    # plt.plot(x, y1, label='LASSO Grouping')
-    # plt.plot(x, y2, label='Normal')
-    # plt.plot(x, y3, label='One Grouping')
-    # plt.plot(x, y4, label='Random Grouping')
+    plt.plot(x, y1, label='LASSO Grouping')
+    plt.plot(x, y2, label='Normal')
+    plt.plot(x, y3, label='One Grouping')
+    plt.plot(x, y4, label='Random Grouping')
 
     plt.xlabel('Evaluation times')
     plt.ylabel('Fitness')
