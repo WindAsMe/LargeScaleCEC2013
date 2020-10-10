@@ -174,7 +174,7 @@ def write_obj_trace(path, fileName, trace):
                 f.write(str(trace[i]))
             else:
                 f.write(str(trace[i]) + ', ')
-        f.write(']')
+        f.write('],')
         f.write('\n')
         f.close()
 
@@ -318,5 +318,6 @@ def write_elite(data, func_name):
                 file.write(str(data[i]) + ', ')
             else:
                 file.write(str(data[i]))
-        file.write(']')
+        file.write('],')
+        file.write('\n')
     file.close()
