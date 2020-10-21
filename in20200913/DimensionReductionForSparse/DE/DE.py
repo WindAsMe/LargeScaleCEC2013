@@ -2,10 +2,8 @@ from in20200913.DimensionReductionForSparse.DE import MyProblem, templet
 from in20200913.DimensionReductionForSparse.util import help
 import geatpy as ea
 import numpy as np
-from numba import vectorize
 
 
-@vectorize(["float32(float32, float32)"], target='cuda')
 def ProblemsOptimization(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
     var_traces = np.zeros((MAX_iteration, Dim))
     based_population = np.zeros(Dim)

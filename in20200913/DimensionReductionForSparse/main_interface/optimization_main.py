@@ -1,6 +1,7 @@
-from in20200913.DimensionReductionForSparse.main_interface.optimization_f.interface_combination import f
+from in20200913.DimensionReductionForSparse.main_interface.optimization_f.interface_combination import f, f_jit
 from in20200913.DimensionReductionForSparse.util import help
 from cec2013lsgo.cec2013 import Benchmark
+import time
 
 
 if __name__ == '__main__':
@@ -24,7 +25,7 @@ if __name__ == '__main__':
 
     func_num = 1
     for func_num in range(1, 16):
-        test_time = 25
+        test_time = 1
         for i in range(test_time):
             Dim = 1000
             MAX_iteration = 100
@@ -42,8 +43,8 @@ if __name__ == '__main__':
             groups_Random = help.groups_random_create(Dim, 250, 10)
 
             f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_LASSO, 'LASSO')
-            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_Normal, 'Normal')
-            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_One, 'One')
-            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_Random, 'Random')
+            # f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_Normal, 'Normal')
+            # f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_One, 'One')
+            # f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_Random, 'Random')
 
             print('    Finished: ', 'function: ', func_num, 'iteration: ', i+1, '/', test_time)
