@@ -21,5 +21,5 @@ def f(Dim, func_num, NIND, MAX_iteration, scale_range, groups, method):
     help.write_obj_trace(name, method, best_obj_trace)
     x = np.linspace(0, 3000000, MAX_iteration)
     help.draw_obj(x, best_obj_trace, method + ' Grouping', 'temp')
-    if method == 'LASSO':
-        help.write_elite(best_index[len(best_index) - 1], method)
+    # if method == 'LASSO':
+    #     help.write_elite(best_index[len(best_index) - 1], method)

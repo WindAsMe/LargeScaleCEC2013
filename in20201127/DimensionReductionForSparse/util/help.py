@@ -175,7 +175,7 @@ def groups_Normal(Dim=1000):
 
 
 def write_obj_trace(path, fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\obj\\" + path + "\\" + fileName
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\obj\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -207,8 +207,10 @@ def write_var_trace(path, fileName, trace):
 
 def write_grouping(path, groups):
     with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20201127\DimensionReductionForSparse\grouping\\' + path, 'a') as file:
+        file.write('[')
         for g in groups:
             file.write(str(g) + ', ')
+        file.write(']')
     file.close()
 
 
@@ -330,3 +332,34 @@ def write_elite(data, func_name):
         file.write('],')
         file.write('\n')
     file.close()
+
+
+# Return: True(separable) False(none-separable)
+def Differential(e1, e2, function):
+    index_1 = np.zeros((1, 1000))[0]
+    index_2 = np.zeros((1, 1000))[0]
+
+    intercept = function(index_1)
+    index_1[e1] = 1
+    a = function(index_1) - intercept  # x[e1]=1
+    index_2[e2] = 1
+    b = function(index_2) - intercept  # x[e2]=1
+    index_1[e2] = 1
+    c = function(index_1) - intercept  # x[e1] and x[e2]=1
+    return np.abs(c - (a + b)) < 0.001
+
+
+# Return True means proper
+def check_proper(groups):
+    flag = [False] * 1000
+    for group in groups:
+        for e in group:
+            flag[e] = True
+    return not False in flag
+
+
+def groups_feature(groups):
+    lens = []
+    for g in groups:
+        lens.append(len(g))
+    print('len of groups: ', len(groups), ' for each group: ', lens)

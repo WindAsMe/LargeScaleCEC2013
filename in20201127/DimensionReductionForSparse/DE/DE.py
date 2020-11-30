@@ -37,7 +37,7 @@ def GroupOptimization(NIND, MAX_iteration, benchmark, scale_range, group, based_
     """===========================算法参数设置=========================="""
 
     # myAlgorithm = templet.soea_SaNSDE_templet(problem, population)
-    myAlgorithm = templet.soea_currentToBest_templet(problem, population)
+    myAlgorithm = ea.soea_DE_currentToBest_1_L_templet(problem, population)
     myAlgorithm.MAXGEN = MAX_iteration
     myAlgorithm.drawing = 0
     """=====================调用算法模板进行种群进化====================="""
