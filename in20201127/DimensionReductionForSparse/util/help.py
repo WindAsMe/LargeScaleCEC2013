@@ -144,38 +144,11 @@ def draw_obj(x, y1, label, name):
     plt.show()
 
 
-def groups_one_create(Dim):
-    groups = []
-    for i in range(Dim):
-        groups.append([i])
-    return groups
 
-
-def groups_random_create(Dim, groups_num=250, max_number=10):
-    groups = []
-    d = {}
-    for i in range(Dim):
-        d[i] = []
-    for i in range(Dim):
-        r = random.randint(0, groups_num-1)
-        while len(d[r]) >= max_number:
-            r = random.randint(0, groups_num-1)
-        d[r].append(i)
-    for i in d:
-        if d[i]:
-            groups.append(d[i])
-    return groups
-
-
-def groups_Normal(Dim=1000):
-    group = []
-    for i in range(Dim):
-        group.append(i)
-    return [group]
 
 
 def write_obj_trace(path, fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\obj\\" + path + "\\" + fileName
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\data\obj\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -189,7 +162,7 @@ def write_obj_trace(path, fileName, trace):
 
 
 def write_var_trace(path, fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\var\\" + path + "\\" + fileName
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\final\\var\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -259,24 +232,6 @@ def same_elements_in_population(pop1, pop2):
     return ns, nf
 
 
-def CRm(CR=0.5):
-    C = random.gauss(CR, 0.1)
-    if C >= 1:
-        C = 0.8
-    if C <= 0:
-        C = 0.2
-    return C
-
-
-def self_adaptive_F(g, G, f=0.5):
-    return f * 2 ** (np.e ** (1 - ((G) / (G + 1 - g))))
-
-
-def high_low_F(high, low, iteration, Max_iteration):
-    d = (high - low) / Max_iteration
-    return low + iteration * d
-
-
 def draw_summary(x, y1, y2, y3, y4, name):
     plt.semilogy(x, y1, label='LASSO Grouping')
     plt.semilogy(x, y2, label='Normal')
@@ -297,16 +252,16 @@ def draw_summary(x, y1, y2, y3, y4, name):
 
 
 def write_final(d1, d2, d3, d4):
-    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\final\\LASSO', 'a') as file:
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\final\\final\\LASSO', 'a') as file:
         file.write(str(d1) + ', ')
     file.close()
-    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\final\\Normal', 'a') as file:
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\final\\final\\Normal', 'a') as file:
         file.write(str(d2) + ', ')
     file.close()
-    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\final\\One', 'a') as file:
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\final\\final\\One', 'a') as file:
         file.write(str(d3) + ', ')
     file.close()
-    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\trace\\final\\Random', 'a') as file:
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\in20200913\DimensionReductionForSparse\data\\final\\final\\Random', 'a') as file:
         file.write(str(d4) + ', ')
     file.close()
 
@@ -363,3 +318,5 @@ def groups_feature(groups):
     for g in groups:
         lens.append(len(g))
     print('len of groups: ', len(groups), ' for each group: ', lens)
+
+

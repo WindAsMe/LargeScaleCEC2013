@@ -2,7 +2,7 @@ import geatpy as ea
 import numpy as np
 
 
-class soea_currentToBest_templet(ea.SoeaAlgorithm):
+class SaNSDE(ea.SoeaAlgorithm):
 
     def __init__(self, problem, population):
         ea.SoeaAlgorithm.__init__(self, problem, population)  # 先调用父类构造方法
@@ -42,3 +42,5 @@ class soea_currentToBest_templet(ea.SoeaAlgorithm):
             tempPop.FitnV = ea.scaling(tempPop.ObjV, tempPop.CV, self.problem.maxormins)  # 计算适应度
             population = tempPop[ea.selecting('otos', tempPop.FitnV, NIND)]  # 采用One-to-One Survivor选择，产生新一代种群
         return self.finishing(population)  # 调用finishing完成后续工作并返回结果
+
+
