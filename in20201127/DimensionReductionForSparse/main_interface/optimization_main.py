@@ -1,6 +1,6 @@
 from in20201127.DimensionReductionForSparse.main_interface.f import f
 from in20201127.DimensionReductionForSparse.util import help
-from in20201127.DimensionReductionForSparse.main_interface.grouping_main import LASSOCC, DECC_DG, CCEA
+from in20201127.DimensionReductionForSparse.main_interface.grouping_main import LASSOCC, DECC_DG, DECC_D, DECC_G, CCEA
 from cec2013lsgo.cec2013 import Benchmark
 
 
@@ -20,8 +20,13 @@ if __name__ == '__main__':
             groups_LASSO = LASSOCC(func_num)
             for g in groups_LASSO:
                 g.sort()
+            groups_DECC_G = DECC_G(func_num)
+            groups_DECC_D = DECC_D(func_num)
+            groups_DECC_DG = DECC_DG(func_num)
 
             f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_LASSO, 'LASSO')
-            # f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_Normal, 'Normal')
-            # f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_One, 'One')
-            # f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_Random, 'Random')
+            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_DECC_G, 'DECC-G')
+            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_DECC_D, 'DECC-D')
+            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_DECC_DG, 'DECC-DG')
+
+            print('    Finished: ', 'function: ', func_num, 'iteration: ', i + 1, '/', test_time)
