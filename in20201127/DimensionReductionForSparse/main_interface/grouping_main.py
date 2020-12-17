@@ -64,7 +64,7 @@ def LASSOCC(func_num):
         for g in groups:
             temp_groups.append(g)
         All_groups = temp_groups.copy()
-    print('verify time: ', verify_time)
+    # print('verify time: ', verify_time)
     return All_groups
 
 
@@ -101,17 +101,14 @@ def DECC_DG(func_num):
 
 def DECC_G(Dim, groups_num=10, max_number=100):
     groups = []
-    d = {}
+    for i in range(groups_num):
+        groups.append([])
     for i in range(Dim):
-        d[i] = []
-    for i in range(Dim):
-        r = random.randint(0, groups_num-1)
-        while len(d[r]) >= max_number:
-            r = random.randint(0, groups_num-1)
-        d[r].append(i)
-    for i in d:
-        if d[i]:
-            groups.append(d[i])
+        index = random.randint(0, groups_num-1)
+        while len(groups[index]) > max_number:
+            index = random.randint(0, groups_num - 1)
+        groups[index].append(i)
+    print(groups)
     return groups
 
 

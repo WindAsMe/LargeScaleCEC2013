@@ -20,13 +20,18 @@ if __name__ == '__main__':
             groups_LASSO = LASSOCC(func_num)
             for g in groups_LASSO:
                 g.sort()
-            groups_DECC_G = DECC_G(func_num)
-            groups_DECC_D = DECC_D(func_num)
+            groups_DECC_G = DECC_G(Dim, 10, 100)
+            groups_DECC_D = DECC_D(func_num, 10, 100)
             groups_DECC_DG = DECC_DG(func_num)
 
+            print('LASSOCC: ', help.check_proper(groups_LASSO))
+            print('DECC_G: ', help.check_proper(groups_DECC_G))
+            print('DECC_D: ', help.check_proper(groups_DECC_D))
+            print('DECC_DG: ', help.check_proper(groups_DECC_DG))
+
             f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_LASSO, 'LASSO')
-            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_DECC_G, 'DECC-G')
-            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_DECC_D, 'DECC-D')
-            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_DECC_DG, 'DECC-DG')
+            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_DECC_G, 'DECC_G')
+            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_DECC_D, 'DECC_D')
+            f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_DECC_DG, 'DECC_DG')
 
             print('    Finished: ', 'function: ', func_num, 'iteration: ', i + 1, '/', test_time)
