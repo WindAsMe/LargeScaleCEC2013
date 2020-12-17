@@ -65,7 +65,7 @@ def LASSOCC(func_num):
             temp_groups.append(g)
         All_groups = temp_groups.copy()
     # print('verify time: ', verify_time)
-    return All_groups
+    return All_groups, verify_time + 100000
 
 
 def CCEA(Dim):
@@ -83,6 +83,7 @@ def Normal(Dim=1000):
 
 
 def DECC_DG(func_num):
+    cost = 0
     bench = Benchmark()
     function = bench.get_function(func_num)
     groups = [[0]]
@@ -90,13 +91,14 @@ def DECC_DG(func_num):
         flag = False
         for group in groups:
             for e in group:
+                cost += 1
                 if not help.Differential(e, i, function):
                     group.extend([i])
                     flag = True
                     break
         if flag is False:
             groups.append([i])
-    return groups
+    return groups, cost
 
 
 def DECC_G(Dim, groups_num=10, max_number=100):
@@ -108,7 +110,7 @@ def DECC_G(Dim, groups_num=10, max_number=100):
         while len(groups[index]) > max_number:
             index = random.randint(0, groups_num - 1)
         groups[index].append(i)
-    print(groups)
+    # print(groups)
     return groups
 
 
@@ -127,7 +129,7 @@ def DECC_D(func_num, groups_num=10, max_number=100):
     index_difference = []
     for i in range(Dim):
         index_difference.append(abs(max_index[i] - min_index[i]))
-    sort_index = np.argsort(index_difference)
+    sort_index = np.argsort(index_difference).tolist()
 
     groups = []
     for i in range(groups_num):

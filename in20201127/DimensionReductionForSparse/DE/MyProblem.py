@@ -3,10 +3,10 @@ import numpy as np
 
 
 class MySimpleProblem(ea.Problem):
-    def __init__(self, group, benchmark, scale_range, NIND, maxormin, based_population):
+    def __init__(self, group, benchmark, scale_range, NIND, based_population):
         name = 'MyProblem'
         M = 1
-        maxormins = [maxormin]
+        maxormins = [1]
         self.Dim = len(group)
         varTypes = [0] * self.Dim
         lb = [scale_range[0]] * self.Dim

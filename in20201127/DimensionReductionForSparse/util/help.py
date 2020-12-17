@@ -144,9 +144,6 @@ def draw_obj(x, y1, label, name):
     plt.show()
 
 
-
-
-
 def write_obj_trace(path, fileName, trace):
     full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\data\obj\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
@@ -186,6 +183,11 @@ def write_grouping(path, groups):
         file.write(']')
     file.close()
 
+
+def write_cost(path, cost):
+    with open('D:\CS2019KYUTAI\PythonProject\SparseModeling\data\cost\\' + path, 'a') as file:
+        file.write(str(cost))
+    file.close()
 
 def F(f=0.5):
     U = random.uniform(0, 1)

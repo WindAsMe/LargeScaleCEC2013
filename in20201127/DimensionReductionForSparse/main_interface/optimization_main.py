@@ -6,6 +6,10 @@ from cec2013lsgo.cec2013 import Benchmark
 
 if __name__ == '__main__':
     # func_num = 11
+
+    LASSO_total_cost = 0
+    DECC_DG_total_cost = 0
+
     for func_num in range(4, 12):
         test_time = 25
         for i in range(test_time):
@@ -17,12 +21,16 @@ if __name__ == '__main__':
 
             scale_range = [benchmark_summary['lower'], benchmark_summary['upper']]
 
-            groups_LASSO = LASSOCC(func_num)
+            groups_LASSO, LASSO_cost = LASSOCC(func_num)
+            LASSO_total_cost += LASSO_cost
             for g in groups_LASSO:
                 g.sort()
+            # DECC-G == Random
             groups_DECC_G = DECC_G(Dim, 10, 100)
+            # cost == 100000
             groups_DECC_D = DECC_D(func_num, 10, 100)
-            groups_DECC_DG = DECC_DG(func_num)
+            groups_DECC_DG, DECC_DG_cost = DECC_DG(func_num)
+            DECC_DG_total_cost += DECC_DG_cost
 
             print('LASSOCC: ', help.check_proper(groups_LASSO))
             print('DECC_G: ', help.check_proper(groups_DECC_G))
@@ -35,3 +43,6 @@ if __name__ == '__main__':
             f(Dim, func_num, NIND, MAX_iteration, scale_range, groups_DECC_DG, 'DECC_DG')
 
             print('    Finished: ', 'function: ', func_num, 'iteration: ', i + 1, '/', test_time)
+
+        help.write_cost('LASSOCC', LASSO_total_cost / test_time)
+        help.write_cost('DECC_DG', DECC_DG_total_cost / test_time)

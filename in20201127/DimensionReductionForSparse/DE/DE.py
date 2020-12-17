@@ -4,12 +4,12 @@ import geatpy as ea
 import numpy as np
 
 
-def ProblemsOptimization(Dim, NIND, MAX_iteration, benchmark, scale_range, groups, maxormin):
+def ProblemsOptimization(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
     var_traces = np.zeros((MAX_iteration, Dim))
     based_population = np.zeros(Dim)
     for i in range(len(groups)):
         var_trace, obj_trace = GroupOptimization(NIND, MAX_iteration, benchmark, scale_range, groups[i],
-                                                 based_population, maxormin)
+                                                 based_population)
 
         for element in groups[i]:
             var_traces[:, element] = var_trace[:, groups[i].index(element)]
@@ -22,8 +22,8 @@ def ProblemsOptimization(Dim, NIND, MAX_iteration, benchmark, scale_range, group
 
 
 # Optimization for one group
-def GroupOptimization(NIND, MAX_iteration, benchmark, scale_range, group, based_population, maxormin):
-    problem = MyProblem.MySimpleProblem(group, benchmark, scale_range, NIND * len(group), maxormin, based_population)  # 实例化问题对象
+def GroupOptimization(NIND, MAX_iteration, benchmark, scale_range, group, based_population):
+    problem = MyProblem.MySimpleProblem(group, benchmark, scale_range, NIND * len(group), based_population)  # 实例化问题对象
 
     """==============================种群设置==========================="""
     Encoding = 'RI'  # 编码方式
