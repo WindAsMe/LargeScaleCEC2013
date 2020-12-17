@@ -1,8 +1,9 @@
 from in20201127.DimensionReductionForSparse.util import help
 from in20201127.DimensionReductionForSparse.Sparse import SparseModel
+from in20201127.DimensionReductionForSparse.DE import DE
 from cec2013lsgo.cec2013 import Benchmark
 import random
-from in20201127.DimensionReductionForSparse.DE import DE
+import numpy as np
 
 
 def LASSOCC(func_num):
@@ -114,7 +115,7 @@ def DECC_G(Dim, groups_num=10, max_number=100):
     return groups
 
 
-def DECC_D(func_num):
+def DECC_D(func_num, groups_num=10, max_number=100):
     bench = Benchmark()
     function = bench.get_function(func_num)
     benchmark_summary = bench.get_info(func_num)
@@ -129,4 +130,9 @@ def DECC_D(func_num):
     index_difference = []
     for i in range(Dim):
         index_difference.append(abs(max_index[i] - min_index[i]))
+    sort_index = np.argsort(index_difference)
 
+    groups = []
+    for i in range(groups_num):
+        groups.append(sort_index[i*max_number:(i+1)*max_number])
+    return groups
