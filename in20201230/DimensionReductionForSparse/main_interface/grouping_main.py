@@ -1,6 +1,6 @@
-from in20201127.DimensionReductionForSparse.util import help
-from in20201127.DimensionReductionForSparse.Sparse import SparseModel
-from in20201127.DimensionReductionForSparse.DE import DE
+from in20201230.DimensionReductionForSparse.util import help
+from in20201230.DimensionReductionForSparse.Sparse import SparseModel
+from in20201230.DimensionReductionForSparse.DE import DE
 from cec2013lsgo.cec2013 import Benchmark
 import random
 import numpy as np
@@ -68,7 +68,7 @@ def LASSOCC(func_num):
     return All_groups, verify_time + 100000
 
 
-def CCEA(Dim):
+def CCDE(Dim):
     groups = []
     for i in range(Dim):
         groups.append([i])

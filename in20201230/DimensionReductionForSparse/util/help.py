@@ -145,7 +145,7 @@ def draw_obj(x, y1, label, name):
 
 
 def write_obj_trace(path, fileName, trace):
-    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\data\obj\\" + path + "\\" + fileName
+    full_path = "D:\CS2019KYUTAI\PythonProject\SparseModeling\in20201230\DimensionReductionForSparse\data\\trace\obj\\" + path + "\\" + fileName
     with open(full_path, 'a') as f:
         f.write('[')
         for i in range(len(trace)):
@@ -298,7 +298,7 @@ def check_proper(groups):
     for group in groups:
         for e in group:
             flag[e] = True
-    return not False in flag
+    return False not in flag
 
 
 def groups_feature(groups):
