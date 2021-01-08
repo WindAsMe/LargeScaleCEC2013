@@ -234,17 +234,27 @@ def is_Continue(Best_previous, Best_current, threshold=0.001):
     return Best_current * (1+threshold) < Best_previous
 
 
-def initial_population(NIND, groups, up, down, elite):
+def initial_population(NIND, groups, up, down, elite=None):
     initial_Population = []
     for group in groups:
-        problem = Block_Problem(group, None, up, down, NIND, None)  # 实例化问题对象
+        problem = Block_Problem(group, None, up, down, None)  # 实例化问题对象
 
         Encoding = 'RI'  # 编码方式
         NIND = NIND      # 种群规模
         Field = ea.crtfld(Encoding, problem.varTypes, problem.ranges, problem.borders)
         population = ea.Population(Encoding, Field, NIND)
         population.initChrom(NIND * len(group))
-        for i in range(len(population.Chrom[0])):
-            population.Chrom[0][i] = elite[group[i]]
+        if elite is not None:
+            for i in range(len(population.Chrom[0])):
+                population.Chrom[0][i] = elite[group[i]]
         initial_Population.append(population)
     return initial_Population
+
+
+def draw_check(x, data, name):
+    plt.plot(x, data, label=name)
+
+    plt.xlabel('Evaluation times')
+    plt.ylabel('Fitness')
+    plt.legend()
+    plt.show()

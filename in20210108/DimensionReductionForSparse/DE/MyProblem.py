@@ -2,8 +2,8 @@ import geatpy as ea
 import numpy as np
 
 
-class CCDE_Problem(ea.Problem):
-    def __init__(self, group, benchmark, scale_range, NIND, based_population):
+class CC_Problem(ea.Problem):
+    def __init__(self, group, benchmark, scale_range, based_population):
         name = 'MyProblem'
         M = 1
         maxormins = [1]
@@ -13,7 +13,6 @@ class CCDE_Problem(ea.Problem):
         ub = [scale_range[1]] * self.Dim
         lbin = [1] * self.Dim
         ubin = [1] * self.Dim
-        self.NIND = NIND
         self.benchmark = benchmark
         self.group = group
         self.based_population = based_population
@@ -21,24 +20,21 @@ class CCDE_Problem(ea.Problem):
 
     def aimFunc(self, pop):  # 目标函数，pop为传入的种群对象
         temp_Phen = []
-        for i in range(self.NIND):
+        for i in range(len(pop.Chrom)):
             temp_Phen.append(self.based_population)
         temp_Phen = np.array(temp_Phen)
 
-        flag = 0
         for element in self.group:
-            temp_Phen[:, element] = pop.Phen[:, flag]
-            flag += 1
+            temp_Phen[:, element] = pop.Phen[:, self.group.index(element)]
 
         result = []
         for p in temp_Phen:
             result.append([self.benchmark(p)])
-
         pop.ObjV = np.array(result)
 
 
 class Block_Problem(ea.Problem):
-    def __init__(self, group, benchmark, up, down, NIND, based_population):
+    def __init__(self, group, benchmark, up, down, based_population):
         name = 'MyProblem'
         M = 1
         maxormins = [1]
@@ -51,7 +47,6 @@ class Block_Problem(ea.Problem):
             sub_ub.append(up[e])
         lbin = [1] * self.Dim
         ubin = [1] * self.Dim
-        self.NIND = NIND
         self.benchmark = benchmark
         self.group = group
         self.based_population = based_population
@@ -60,7 +55,7 @@ class Block_Problem(ea.Problem):
 
     def aimFunc(self, pop):  # 目标函数，pop为传入的种群对象
         temp_Phen = []
-        for i in range(self.NIND):
+        for i in range(len(pop.Chrom)):
             temp_Phen.append(self.based_population)
         temp_Phen = np.array(temp_Phen)
 

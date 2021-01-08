@@ -1,6 +1,7 @@
 from in20210108.DimensionReductionForSparse.util import help
 from in20210108.DimensionReductionForSparse.DE import DE
 from cec2013lsgo.cec2013 import Benchmark
+import numpy as np
 
 
 def DECC_CL_exe(Dim, func_num, NIND, m1, scale_range, groups_One, groups_Lasso, Lasso_cost, method):
@@ -27,28 +28,15 @@ def DECC_CL_exe(Dim, func_num, NIND, m1, scale_range, groups_One, groups_Lasso, 
     help.write_DECC_CL_trace(name, method, best_obj_trace)
 
 
-def DECC_L_exe(Dim, func_num, NIND, MAX_iteration, scale_range, groups_Lasso, method):
+def CC_exe(Dim, func_num, NIND, Max_iteration, scale_range, groups, method):
     bench = Benchmark()
     function = bench.get_function(func_num)
     name = 'f' + str(func_num)
     print(name, 'Optimization with', method)
 
     """The next is DE optimization"""
-    up = [scale_range[1]] * Dim
-    down = [scale_range[0]] * Dim
-    central_point = help.create_data(1, Dim, scale_range)[0]
-    best_indexes, best_obj_trace = DE.DECC_CL_DECC_L(Dim, NIND, MAX_iteration, function, up, down, groups_Lasso, central_point)
-
-    help.write_DECC_CL_trace(name, method, best_obj_trace)
-
-
-def CC_exe(Dim, func_num, NIND, m1, scale_range, groups_One, method):
-    bench = Benchmark()
-    function = bench.get_function(func_num)
-    name = 'f' + str(func_num)
-    print(name, 'Optimization with', method)
-
-    """The next is DE optimization"""
-    best_indexes, best_obj_trace = DE.CCDE(Dim, NIND, m1, function, scale_range, groups_One)
+    best_indexes, best_obj_trace = DE.CC(Dim, NIND, Max_iteration, function, scale_range, groups)
+    x = np.linspace(0, 3000000, len(best_obj_trace))
+    help.draw_check(x, best_obj_trace, method)
     help.write_obj_trace(name, method, best_obj_trace)
 

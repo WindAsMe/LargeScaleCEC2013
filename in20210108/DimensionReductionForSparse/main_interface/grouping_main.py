@@ -137,3 +137,4 @@ def DECC_D(func_num, groups_num=10, max_number=100):
     for i in range(groups_num):
         groups.append(sort_index[i*max_number:(i+1)*max_number])
     return groups
+
