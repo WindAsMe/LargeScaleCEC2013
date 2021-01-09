@@ -19,6 +19,7 @@ class CC_Problem(ea.Problem):
         ea.Problem.__init__(self, name, M, maxormins, self.Dim, varTypes, lb, ub, lbin, ubin)
 
     def aimFunc(self, pop):  # 目标函数，pop为传入的种群对象
+
         temp_Phen = []
         for i in range(len(pop.Chrom)):
             temp_Phen.append(self.based_population)
@@ -31,6 +32,7 @@ class CC_Problem(ea.Problem):
         for p in temp_Phen:
             result.append([self.benchmark(p)])
         pop.ObjV = np.array(result)
+        # print(min(pop.ObjV))
 
 
 class Block_Problem(ea.Problem):

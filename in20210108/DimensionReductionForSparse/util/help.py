@@ -176,6 +176,10 @@ def preserve(var_traces, benchmark_function):
     obj_traces = []
     for v in var_traces:
         obj_traces.append(benchmark_function(v))
+    for i in range(len(obj_traces) - 1):
+        if obj_traces[i] < obj_traces[i + 1]:
+            var_traces[i + 1] = var_traces[i]
+            obj_traces[i + 1] = obj_traces[i]
     return var_traces, obj_traces
 
 
