@@ -18,13 +18,13 @@ def DECC_CL_CCDE(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
     while help.is_Continue(Best_previous, Best_current, threshold=0.001) and real_iteration < MAX_iteration:
         Best_previous = Best_current
         for i in range(len(groups)):
-            var_trace, obj_trace, population = CC_Optimization(NIND, 1, benchmark, scale_range, groups[i], based_population,
-                                                       initial_Population[i])
+            var_trace, obj_trace, population = CC_Optimization(1, benchmark, scale_range, groups[i],
+                                                       based_population, initial_Population[i], real_iteration)
             initial_Population[i] = population
 
             for element in groups[i]:
-                var_traces[real_iteration, element] = var_trace[:, groups[i].index(element)]
-                based_population[element] = var_trace[np.argmin(obj_trace[:, 1]), groups[i].index(element)]
+                var_traces[real_iteration, element] = var_trace[1, groups[i].index(element)]
+                based_population[element] = var_trace[1, groups[i].index(element)]
 
         Best_current = benchmark(var_traces[real_iteration])
         real_iteration += 1
@@ -38,22 +38,22 @@ def DECC_CL_CCDE(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
 def DECC_CL_DECC_L(Dim, NIND, MAX_iteration, benchmark, up, down, groups, elite):
     print(benchmark(elite))
     print(MAX_iteration)
-    var_traces = np.zeros((MAX_iteration+1, Dim))
-    var_traces[0] = copy.deepcopy(elite)
+    var_traces = np.zeros((MAX_iteration, Dim))
 
     based_population = copy.deepcopy(elite)
     initial_Population = help.initial_population(NIND, groups, up, down, elite)
-    for real_iteration in range(1, MAX_iteration+1):
+    for real_iteration in range(MAX_iteration):
         for i in range(len(groups)):
 
-            var_trace, obj_trace, population = Block_Optimization(1, benchmark, up, down, groups[i],
-                                                                    based_population, initial_Population[i])
+            var_trace, obj_trace, population = CC_Limit_Optimization(1, benchmark, up, down, groups[i], based_population,
+                                                                     initial_Population[i], real_iteration)
             initial_Population[i] = population
             for element in groups[i]:
-                var_traces[real_iteration, element] = var_trace[0, groups[i].index(element)]
-                based_population[element] = var_trace[0, groups[i].index(element)]
+                var_traces[real_iteration, element] = var_trace[1, groups[i].index(element)]
+                based_population[element] = var_trace[1, groups[i].index(element)]
 
-    x = np.linspace(0, 1000, len(var_traces))
+    var_traces, obj_traces = help.preserve(var_traces, benchmark)
+    x = np.linspace(0, 3000000, len(var_traces))
     y = []
     for v in var_traces:
         y.append(benchmark(v))
@@ -64,23 +64,7 @@ def DECC_CL_DECC_L(Dim, NIND, MAX_iteration, benchmark, up, down, groups, elite)
     plt.legend()
     plt.show()
 
-    var_traces, obj_traces = help.preserve(var_traces, benchmark)
     return var_traces, obj_traces
-
-
-def Block_Optimization(MAX_iteration, benchmark, up, down, group, based_population, p):
-    problem = MyProblem.Block_Problem(group, benchmark, up, down, based_population)  # 实例化问题对象
-
-    """===========================算法参数设置=========================="""
-
-    myAlgorithm = ea.soea_DE_currentToBest_1_L_templet(problem, p)
-    myAlgorithm.MAXGEN = MAX_iteration
-    myAlgorithm.drawing = 0
-    """=====================调用算法模板进行种群进化====================="""
-    # [population, obj_trace, var_trace] = myAlgorithm.run(population, MAX_iteration)
-    [population, obj_trace, var_trace] = myAlgorithm.run()
-    # obj_traces.append(obj_trace[0])
-    return var_trace, obj_trace, population
 
 
 # def OptTool(Dim, NIND, MAX_iteration, benchmark, scale_range, maxormin):
@@ -118,12 +102,28 @@ def CC(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
 
             initial_Population[i] = population
             for element in groups[i]:
-                var_traces[real_iteration, element] = var_trace[0, groups[i].index(element)]
-                based_population[element] = var_trace[0, groups[i].index(element)]
+                var_traces[real_iteration, element] = var_trace[1, groups[i].index(element)]
+                based_population[element] = var_trace[1, groups[i].index(element)]
         real_iteration += 1
 
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
     return var_traces, obj_traces
+
+
+def CC_Limit_Optimization(MAX_iteration, benchmark, up, down, group, based_population, p, real):
+    problem = MyProblem.Block_Problem(group, benchmark, up, down, based_population)  # 实例化问题对象
+
+    """===========================算法参数设置=========================="""
+
+    myAlgorithm = templet.soea_DE_currentToBest_1_L_templet(problem, p)
+    myAlgorithm.MAXGEN = MAX_iteration
+    myAlgorithm.drawing = 0
+    """=====================调用算法模板进行种群进化====================="""
+    # [population, obj_trace, var_trace] = myAlgorithm.run(population, MAX_iteration)
+    [population, obj_trace, var_trace] = myAlgorithm.run(real)
+    # obj_traces.append(obj_trace[0])
+
+    return var_trace, obj_trace, population
 
 
 def CC_Optimization(MAX_iteration, benchmark, scale_range, group, based_population, p, real):

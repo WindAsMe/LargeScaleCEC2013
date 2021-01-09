@@ -69,4 +69,3 @@ class Block_Problem(ea.Problem):
             result.append([self.benchmark(p)])
         pop.ObjV = np.array(result)
 
-

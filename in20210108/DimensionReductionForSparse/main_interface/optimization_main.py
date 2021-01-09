@@ -18,18 +18,16 @@ if __name__ == '__main__':
 
             scale_range = [benchmark_summary['lower'], benchmark_summary['upper']]
             groups_One = CCDE(Dim)
-            groups_DECC_G = DECC_G(Dim, 10, 100)
-            groups_Normal = Normal(Dim)
-            # m1 = 50
+            # groups_DECC_G = DECC_G(Dim, 10, 100)
+            m1 = 50
             groups_LASSO, LASSO_cost = LASSOCC(func_num)
             for g in groups_LASSO:
                 g.sort()
 
-            f.CC_exe(Dim, func_num, NIND, int(EFs / (NIND * Dim) / 2) - 1, scale_range, groups_DECC_G, 'DECC_G')
-            f.CC_exe(Dim, func_num, NIND, int(EFs / (NIND * Dim) / 2) - 1, scale_range, groups_Normal, 'Normal')
-            f.CC_exe(Dim, func_num, NIND, int(EFs / (NIND * Dim) / 2) - 1, scale_range, groups_One, 'One')
-            f.CC_exe(Dim, func_num, NIND, int((EFs - LASSO_cost) / (NIND * Dim) / 2), scale_range, groups_LASSO, 'DECC_L')
-            # f.DECC_CL_exe(Dim, func_num, NIND, m1, scale_range, groups_One, groups_LASSO, LASSO_cost, 'DECC_CL')
+            # f.CC_exe(Dim, func_num, NIND, int(EFs / (NIND * Dim)) - 2, scale_range, groups_DECC_G, 'DECC_G')
+            # f.CC_exe(Dim, func_num, NIND, int(EFs / (NIND * Dim)) - 2, scale_range, groups_One, 'One')
+            # f.CC_exe(Dim, func_num, NIND, int((EFs - LASSO_cost) / (NIND * Dim)), scale_range, groups_LASSO, 'DECC_L')
+            f.DECC_CL_exe(Dim, func_num, NIND, m1, scale_range, groups_One, groups_LASSO, LASSO_cost, 'DECC_CL')
 
             print('    Finished: ', 'function: ', func_num, 'iteration: ', i + 1, '/', test_time)
 
