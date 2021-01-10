@@ -183,11 +183,11 @@ def preserve(var_traces, benchmark_function):
     return var_traces, obj_traces
 
 
-def draw_summary(x, x_LASSO, x_DECC_DG, x_DECC_D, x_DECC_CL, LASSO_ave, Normal_ave, One_ave,
+def draw_summary(x, x_Normal, x_LASSO, x_DECC_D, x_DECC_DG, x_DECC_CL, LASSO_ave, Normal_ave, One_ave,
                       DECC_DG_ave, DECC_D_ave, DECC_G_ave, DECC_CL_ave, name):
     plt.semilogy(x_LASSO, LASSO_ave, label='DECC-L')
     plt.semilogy(x, One_ave, label='CCDE')
-    plt.semilogy(x, Normal_ave, label='Normal')
+    plt.semilogy(x_Normal, Normal_ave, label='Normal')
     plt.semilogy(x, DECC_G_ave, label='DECC-G')
     plt.semilogy(x_DECC_D, DECC_D_ave, label='DECC-D')
     plt.semilogy(x_DECC_DG, DECC_DG_ave, label='DECC-DG')
@@ -233,9 +233,12 @@ def check_proper(groups):
     return False not in flag
 
 
-# Best_current is smaller than Best_previous
-def is_Continue(Best_previous, Best_current, threshold=0.001):
-    return Best_current * (1+threshold) < Best_previous
+def is_Continue(Four_Generation, threshold=0.0001):
+    flag = [True] * (len(Four_Generation) - 1)
+    for i in range(len(Four_Generation)-1):
+        if Four_Generation[i] * (1+threshold) > Four_Generation[i+1]:
+            flag[i] = False
+    return True in flag
 
 
 def initial_population(NIND, groups, up, down, elite=None):
