@@ -187,7 +187,7 @@ def draw_summary(x, x_Normal, x_LASSO, x_DECC_D, x_DECC_DG, x_DECC_CL, LASSO_ave
                       DECC_DG_ave, DECC_D_ave, DECC_G_ave, DECC_CL_ave, name):
     plt.semilogy(x_LASSO, LASSO_ave, label='DECC-L')
     plt.semilogy(x, One_ave, label='CCDE')
-    plt.semilogy(x_Normal, Normal_ave, label='Normal')
+    # plt.semilogy(x_Normal, Normal_ave, label='Normal')
     plt.semilogy(x, DECC_G_ave, label='DECC-G')
     plt.semilogy(x_DECC_D, DECC_D_ave, label='DECC-D')
     plt.semilogy(x_DECC_DG, DECC_DG_ave, label='DECC-DG')

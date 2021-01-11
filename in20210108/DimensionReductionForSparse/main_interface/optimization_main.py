@@ -10,7 +10,7 @@ if __name__ == '__main__':
     NIND = 30
     bench = Benchmark()
     EFs = 3000000
-    for func_num in range(4, 12):
+    for func_num in range(5, 12):
         test_time = 10
         for i in range(test_time):
 
@@ -20,7 +20,7 @@ if __name__ == '__main__':
             groups_One = CCDE(Dim)
             # groups_DECC_G = DECC_G(Dim, 10, 100)
             # groups_DECC_D = DECC_D(func_num, 10, 100)
-            groups_DECC_DG, DECC_DG_cost = DECC_DG(func_num)
+            # groups_DECC_DG, DECC_DG_cost = DECC_DG(func_num)
             m1 = 100
             groups_LASSO, LASSO_cost = LASSOCC(func_num)
             for g in groups_LASSO:

@@ -15,6 +15,7 @@ def DECC_CL_exe(Dim, func_num, NIND, m1, scale_range, groups_One, groups_Lasso, 
     """The next is DE optimization"""
     best_indexes, best_obj_trace_CC, Population, real_iteration = DE.DECC_CL_CCDE(Dim, NIND, m1, function, scale_range, groups_One)
     print('real: ', real_iteration)
+    print(best_obj_trace_CC)
     central_point = best_indexes[len(best_indexes)-1]
     up = [scale_range[1]] * Dim
     down = [scale_range[0]] * Dim

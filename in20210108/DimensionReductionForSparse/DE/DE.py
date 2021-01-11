@@ -10,33 +10,32 @@ import copy
 def DECC_CL_CCDE(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
     var_traces = np.zeros((MAX_iteration, Dim))
     based_population = np.zeros(Dim)
-    initial_Population = help.initial_population(NIND, groups, [scale_range[1]] * Dim, [scale_range[0]] * Dim, [0] * Dim)
-
+    initial_Population = help.initial_population(NIND, groups, [scale_range[1]] * Dim, [scale_range[0]] * Dim)
     real_iteration = 0
-    Four_Generation = [1e30, 1e40, 1e50, 1e60]
 
     while real_iteration < MAX_iteration:
-        if real_iteration > len(Four_Generation):
-            if not help.is_Continue(Four_Generation, threshold=0.0001):
+        # The continuous N generations
+        if real_iteration > 4:
+
+            temp = var_traces[len(var_traces)-4:len(var_traces)-1]
+            obj = []
+            for t in temp:
+                obj.append(benchmark(t))
+            if not help.is_Continue(obj, 0.0001):
                 break
         for i in range(len(groups)):
             var_trace, obj_trace, population = CC_Optimization(1, benchmark, scale_range, groups[i],
-                                                       based_population, initial_Population[i], real_iteration)
-            initial_Population[i] = population
+                                                               based_population, initial_Population[i], real_iteration)
 
+            initial_Population[i] = population
             for element in groups[i]:
                 var_traces[real_iteration, element] = var_trace[1, groups[i].index(element)]
                 based_population[element] = var_trace[1, groups[i].index(element)]
-
-        Best_current = benchmark(var_traces[real_iteration])
-        for i in range(len(Four_Generation)-1, 0, -1):
-            Four_Generation[i] = Four_Generation[i-1]
-        Four_Generation[0] = Best_current
         real_iteration += 1
-    var_traces = var_traces[0:real_iteration]
 
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
     return var_traces, obj_traces, initial_Population, real_iteration
+
 
 
 def DECC_CL_DECC_L(Dim, NIND, MAX_iteration, benchmark, up, down, groups, elite):
