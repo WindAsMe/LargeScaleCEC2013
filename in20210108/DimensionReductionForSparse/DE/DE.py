@@ -12,16 +12,12 @@ def DECC_CL_CCDE(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
     based_population = np.zeros(Dim)
     initial_Population = help.initial_population(NIND, groups, [scale_range[1]] * Dim, [scale_range[0]] * Dim)
     real_iteration = 0
-
+    Obj_traces = []
     while real_iteration < MAX_iteration:
+
         # The continuous N generations
         if real_iteration > 4:
-
-            temp = var_traces[len(var_traces)-4:len(var_traces)-1]
-            obj = []
-            for t in temp:
-                obj.append(benchmark(t))
-            if not help.is_Continue(obj, 0.0001):
+            if not help.is_Continue(Obj_traces[len(Obj_traces)-4:len(Obj_traces)-1], 0.0001):
                 break
         for i in range(len(groups)):
             var_trace, obj_trace, population = CC_Optimization(1, benchmark, scale_range, groups[i],
@@ -31,6 +27,7 @@ def DECC_CL_CCDE(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
             for element in groups[i]:
                 var_traces[real_iteration, element] = var_trace[1, groups[i].index(element)]
                 based_population[element] = var_trace[1, groups[i].index(element)]
+        Obj_traces.append(benchmark(var_traces[real_iteration]))
         real_iteration += 1
 
     var_traces, obj_traces = help.preserve(var_traces, benchmark)

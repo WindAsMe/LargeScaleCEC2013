@@ -236,7 +236,7 @@ def check_proper(groups):
 def is_Continue(Four_Generation, threshold=0.0001):
     flag = [True] * (len(Four_Generation) - 1)
     for i in range(len(Four_Generation)-1):
-        if Four_Generation[i] * (1+threshold) > Four_Generation[i+1]:
+        if Four_Generation[i+1] * (1+threshold) > Four_Generation[i]:
             flag[i] = False
     return True in flag
 
