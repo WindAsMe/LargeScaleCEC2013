@@ -157,6 +157,7 @@ def write_info(p, fileName, data):
     data_path = path.dirname(path.dirname(this_path)) + '\\data\\trace\\obj\\' + p + '\\' + fileName
     with open(data_path, 'a') as f:
         f.write(data + ', ')
+        f.write('\n')
         f.close()
 
 
@@ -221,10 +222,10 @@ def check_proper(groups):
     return False not in flag
 
 
-def is_Continue(Generations, threshold=0.0001):
+def is_Continue(Generations, threshold=0.001):
     flag = [True] * (len(Generations) - 1)
-    for i in range(len(Generations)-1):
-        if Generations[i+1] * (1+threshold) > Generations[i]:
+    for i in range(len(Generations) - 1):
+        if Generations[i + 1] * (1 + threshold) > Generations[i]:
             flag[i] = False
     return True in flag
 

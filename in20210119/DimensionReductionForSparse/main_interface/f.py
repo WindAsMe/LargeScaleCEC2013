@@ -30,13 +30,9 @@ def DECC_CL_exe(Dim, func_num, NIND, m1, scale_range, groups_One, groups_Lasso, 
                                                      function, up, down, groups_Lasso, central_point)
 
     x = np.linspace(0, 3000000, len(best_obj_trace_CC+best_obj_trace_CL))
-    plt.plot(x, best_obj_trace_CC+best_obj_trace_CL, label='DECC-CL')
+    help.draw_check(x, best_obj_trace_CC+best_obj_trace_CL, 'DECC-CL')
 
-    plt.xlabel('Evaluation times')
-    plt.ylabel('Fitness')
-    plt.legend()
-    plt.show()
-    # help.write_obj_trace(name, method, best_obj_trace_CC+best_obj_trace_CL)
+    help.write_obj_trace(name, method, best_obj_trace_CC+best_obj_trace_CL)
 
 
 def CC_exe(Dim, func_num, NIND, Max_iteration, scale_range, groups, method):
