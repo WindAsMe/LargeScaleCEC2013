@@ -142,6 +142,7 @@ def write_obj_trace(p, fileName, trace):
     data_path = path.dirname(path.dirname(this_path)) + '\\data\\trace\\obj\\' + p + '\\' + fileName
 
     with open(data_path, 'a') as f:
+        f.write('[')
         for i in range(len(trace)):
             if i == len(trace) - 1:
                 f.write(str(trace[i]))
@@ -222,12 +223,17 @@ def check_proper(groups):
     return False not in flag
 
 
+# def is_Continue(Generations, threshold=0.001):
+#     flag = [True] * (len(Generations) - 1)
+#     for i in range(len(Generations) - 1):
+#         if Generations[i + 1] * (1 + threshold) > Generations[i]:
+#             flag[i] = False
+#     return True in flag
+
+
 def is_Continue(Generations, threshold=0.001):
-    flag = [True] * (len(Generations) - 1)
-    for i in range(len(Generations) - 1):
-        if Generations[i + 1] * (1 + threshold) > Generations[i]:
-            flag[i] = False
-    return True in flag
+    # print(np.std(Generations, ddof=1))
+    return np.std(Generations, ddof=1) > threshold
 
 
 def initial_population(NIND, groups, up, down, elite=None):
@@ -256,9 +262,4 @@ def draw_check(x, data, name):
     plt.show()
 
 
-def Normalization(m, iter):
-    for j in range(len(m[0])):
-        for i in range(iter):
-            if m[i][j] == 0:
-                m[i][j] = m[i-1][j]
-    return m
+

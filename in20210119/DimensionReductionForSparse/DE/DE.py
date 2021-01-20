@@ -21,26 +21,29 @@ def DECC_CL_CCDE(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
             # The continuous N generations
             if real_iteration > N:
                 if not help.is_Continue(Obj_traces[len(Obj_traces)-N:len(Obj_traces)], 0.01):
+                    # print('break')
                     break
-            var_trace, obj_trace, population = CC_Optimization(1, benchmark, scale_range, groups[i],
+            var_trace, obj_trace, initial_Population[i] = CC_Optimization(1, benchmark, scale_range, groups[i],
                                                                based_population, initial_Population[i], real_iteration)
 
-            initial_Population[i] = population
-            for element in groups[i]:
-                var_traces[real_iteration, element] = var_trace[1, groups[i].index(element)]
-                based_population[element] = var_trace[1, groups[i].index(element)]
+            var_traces[real_iteration, i] = var_trace[1, 0]
+            based_population[i] = var_trace[1, 0]
+
             Obj_traces.append(benchmark(var_traces[real_iteration]))
             real_iteration += 1
+
+        for index in range(real_iteration, MAX_iteration):
+            var_traces[index][i] = var_traces[real_iteration-1][i]
         max_iteration = max(real_iteration, max_iteration)
         cost += real_iteration
 
-    var_traces = help.Normalization(var_traces, max_iteration)[0:max_iteration]
+    var_traces = var_traces[0:max_iteration]
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
     return var_traces, obj_traces, initial_Population, cost
 
 
 def DECC_CL_DECC_L(Dim, NIND, MAX_iteration, benchmark, up, down, groups, elite):
-    print(MAX_iteration)
+    # print(MAX_iteration)
     var_traces = np.zeros((MAX_iteration, Dim))
     based_population = copy.deepcopy(elite)
     initial_population = help.initial_population(NIND, groups, up, down, elite)

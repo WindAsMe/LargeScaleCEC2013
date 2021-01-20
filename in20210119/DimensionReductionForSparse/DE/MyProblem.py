@@ -32,7 +32,6 @@ class CC_Problem(ea.Problem):
         for p in temp_Phen:
             result.append([self.benchmark(p)])
         pop.ObjV = np.array(result)
-        # print(min(pop.ObjV))
 
 
 class Block_Problem(ea.Problem):
