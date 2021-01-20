@@ -16,22 +16,25 @@ def DECC_CL_CCDE(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
     N = 5
     for i in range(len(groups)):
         real_iteration = 0
+        testify_var_traces = np.zeros((MAX_iteration, Dim))
         Obj_traces = []
         while real_iteration < MAX_iteration:
             # The continuous N generations
             if real_iteration > N:
                 if not help.is_Continue(Obj_traces[len(Obj_traces)-N:len(Obj_traces)], 0.01):
-                    # print('break')
+                    print(i, real_iteration)
                     break
             var_trace, obj_trace, initial_Population[i] = CC_Optimization(1, benchmark, scale_range, groups[i],
                                                                based_population, initial_Population[i], real_iteration)
 
+            testify_var_traces[real_iteration, i] = var_trace[1, 0]
             var_traces[real_iteration, i] = var_trace[1, 0]
             based_population[i] = var_trace[1, 0]
 
-            Obj_traces.append(benchmark(var_traces[real_iteration]))
+            Obj_traces.append(benchmark(testify_var_traces[real_iteration]))
             real_iteration += 1
 
+        # print(testify_var_traces[:, i])
         for index in range(real_iteration, MAX_iteration):
             var_traces[index][i] = var_traces[real_iteration-1][i]
         max_iteration = max(real_iteration, max_iteration)
