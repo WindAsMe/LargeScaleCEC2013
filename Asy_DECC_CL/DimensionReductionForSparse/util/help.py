@@ -223,12 +223,10 @@ def is_Continue(Generations, threshold=0.001):
 
 
 # def is_Continue(Generations, threshold=0.001):
-#     print(Generations)
-#     print(np.std(Generations, ddof=1) / np.std(np.linspace(0, len(Generations), len(Generations), endpoint=False), ddof=1))
 #     for i in range(0, len(Generations)-1):
 #         if Generations[i] < Generations[i+1]:
 #             Generations[i+1] = Generations[i]
-#
+#     print(np.std(Generations, ddof=1) / np.std(np.linspace(0, len(Generations), len(Generations), endpoint=False), ddof=1))
 #     return np.std(Generations, ddof=1) / np.std(np.linspace(0, len(Generations), len(Generations), endpoint=False), ddof=1) > threshold
 
 

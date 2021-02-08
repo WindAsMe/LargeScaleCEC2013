@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
             scale_range = [benchmark_summary['lower'], benchmark_summary['upper']]
             groups_One = CCDE(Dim)
-            groups_DECC_G = DECC_G(Dim, 10, 100)
+            # groups_DECC_G = DECC_G(Dim, 10, 100)
             # groups_DECC_D = DECC_D(func_num, 10, 100)
             # groups_DECC_DG, DECC_DG_cost = DECC_DG(func_num)
             m1 = 100
