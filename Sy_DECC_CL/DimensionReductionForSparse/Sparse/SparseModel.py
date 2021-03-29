@@ -1,6 +1,7 @@
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn import linear_model
-from in20210119.DimensionReductionForSparse.util import help
+from Sy_DECC_CL.DimensionReductionForSparse.util import help
+import numpy as np
 
 
 def get_feature_name(number):
@@ -39,7 +40,7 @@ def Regression(degree, train_size, total_dim, group_dim, current_index, scale_ra
     valid_feature = []
     valid_coef = []
     for i in range(len(reg_Lasso.coef_)):
-        if abs(reg_Lasso.coef_[i]) > 0.1 and abs(reg_Lasso.coef_[i]) > flag * 0.1:
+        if abs(reg_Lasso.coef_[i]) > 0.01 and abs(reg_Lasso.coef_[i]) > flag * 0.1:
             valid_feature.append(feature_names[i])
             valid_coef.append(reg_Lasso.coef_[i])
             continue
@@ -49,3 +50,4 @@ def Regression(degree, train_size, total_dim, group_dim, current_index, scale_ra
     # print(valid_coef)
     # print('Sparse model valid coef: ', len(reg_Lasso.coef_) - is_zero(reg_Lasso.coef_), 'intercept: ', reg_Lasso.intercept_)
     return reg_Lasso, feature_names
+

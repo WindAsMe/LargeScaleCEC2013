@@ -155,7 +155,25 @@ def write_obj_trace(p, fileName, trace):
 
 def write_info(p, fileName, data):
     this_path = path.realpath(__file__)
-    data_path = path.dirname(path.dirname(this_path)) + '\\data\\trace\\obj\\' + p + '\\' + fileName
+    data_path = path.dirname(path.dirname(this_path)) + '\\Sy_data\\trace\\obj\\' + p + '\\' + fileName
+    with open(data_path, 'a') as f:
+        f.write(data + ', ')
+        f.write('\n')
+        f.close()
+
+
+def write_CPU_cost(p, fileName, data):
+    this_path = path.realpath(__file__)
+    data_path = path.dirname(path.dirname(this_path)) + '\\Sy_data\\trace\\obj\\' + p + '\\' + fileName
+    with open(data_path, 'a') as f:
+        f.write(data + ', ')
+        f.write('\n')
+        f.close()
+
+
+def write_EFS_cost(p, fileName, data):
+    this_path = path.realpath(__file__)
+    data_path = path.dirname(path.dirname(this_path)) + '\\Sy_data\\trace\\obj\\' + p + '\\' + fileName
     with open(data_path, 'a') as f:
         f.write(data + ', ')
         f.write('\n')
@@ -166,45 +184,95 @@ def preserve(var_traces, benchmark_function):
     obj_traces = []
     for v in var_traces:
         obj_traces.append(benchmark_function(v))
-    print('obj before: ', obj_traces)
     for i in range(len(obj_traces) - 1):
         if obj_traces[i] < obj_traces[i + 1]:
             var_traces[i + 1] = var_traces[i]
             obj_traces[i + 1] = obj_traces[i]
-    print('obj after: ', obj_traces)
     return var_traces, obj_traces
 
 
-def draw_summary(x, x_LASSO, x_DECC_CL,  One_ave, LASSO_ave, DECC_CL_ave, name):
-    plt.semilogy(x_LASSO, LASSO_ave, label='DECC-L')
-    plt.semilogy(x, One_ave, label='CCDE')
-    plt.semilogy(x_DECC_CL, DECC_CL_ave, label='DECC-CL')
+def draw_summary(x, x_DECC_D, x_DECC_DG, x_DECC_L, x_DECC_CL, Normal_ave, One_ave, Random_ave, DECC_D_ave,
+                 DECC_DG_ave, LASSO_ave, DECC_CL_ave):
+    plt.rcParams['font.sans-serif'] = ['SimHei']
+    plt.rcParams['axes.unicode_minus'] = False
 
-    # plt.plot(x_LASSO, LASSO_ave, label='DECC-L')
-    # plt.plot(x, One_ave, label='CCDE')
-    # plt.plot(x_DECC_CL, DECC_CL_ave, label='DECC-CL')
+    plt.semilogy(x, Normal_ave, label='従来法1', linestyle=':')
+    plt.semilogy(x, One_ave, label='従来法2', linestyle=':', color='plum')
+    plt.semilogy(x, Random_ave, label='従来法3', linestyle=':', color='aqua')
+    plt.semilogy(x_DECC_D, DECC_D_ave, label='従来法4', linestyle=':', color='grey')
+    plt.semilogy(x_DECC_DG, DECC_DG_ave, label='従来法5', linestyle=':', color='lawngreen')
+    plt.semilogy(x_DECC_L, LASSO_ave, label='提案法1', color='red')
+    plt.semilogy(x_DECC_CL, DECC_CL_ave, label='提案法2', color='orange')
 
-    plt.xlabel('Evaluation times')
-    plt.ylabel('Fitness')
+    # plt.plot(x, Normal_ave, label='従来法1', linestyle=':')
+    # plt.plot(x, One_ave, label='従来法2', linestyle=':', color='aqua')
+    # plt.plot(x, Random_ave, label='従来法3', linestyle=':')
+    # plt.plot(x_DECC_D, DECC_D_ave, label='従来法4', linestyle=':', color='grey')
+    # plt.plot(x_DECC_DG, DECC_DG_ave, label='従来法5', linestyle=':', color='lawngreen')
+    # plt.plot(x_DECC_L, LASSO_ave, label='提案法1', color='red')
+    # plt.plot(x_DECC_CL, DECC_CL_ave, label='提案法2', color='orange')
+    font_title = {'size': 18}
+    font = {'size': 16}
+    plt.title('$f_{11}$', font_title)
+    plt.xlabel('Fitness evaluation times (×${10^6}$)', font)
+    plt.ylabel('Fitness', font)
     plt.legend()
     # plt.savefig(
-    #    'D:\CS2019KYUTAI\PythonProject\SparseModeling\data\\pic\\' + name + '_obj')
+    #    'D:\CS2019KYUTAI\PythonProject\SparseModeling\Sy_data\\pic\\' + name + '_obj')
+
+    plt.text(3, 4*10e10, "**", fontdict={'size': 14, 'color': 'red'})
+    plt.text(3, 6*10e10, "**", fontdict={'size': 14, 'color': 'orange'})
+
     plt.show()
 
 
 # Return: True(separable) False(none-separable)
-def Differential(e1, e2, function):
-    index_1 = np.zeros((1, 1000))[0]
-    index_2 = np.zeros((1, 1000))[0]
+# e1 < e2
+def Differential(e1, e2, function, intercept, one_bias):
+    index = np.zeros((1, 1000))[0]
+    index[e1] = 1
+    index[e2] = 1
 
-    intercept = function(index_1)
-    index_1[e1] = 1
-    a = function(index_1) - intercept  # x[e1]=1
-    index_2[e2] = 1
-    b = function(index_2) - intercept  # x[e2]=1
-    index_1[e2] = 1
-    c = function(index_1) - intercept  # x[e1] and x[e2]=1
+    c = function(index) - intercept
+    b = one_bias[e1]
+    a = one_bias[e2]
     return np.abs(c - (a + b)) < 0.001
+
+
+def DG_Differential(e1, e2, a, function, intercept):
+    index1 = np.zeros((1, 1000))[0]
+    index2 = np.zeros((1, 1000))[0]
+    index1[e2] = 1
+    index2[e1] = 1
+    index2[e2] = 1
+
+    b = function(index1) - intercept
+    c = function(index2) - intercept
+
+    return np.abs(c - (a + b)) < 0.001
+
+
+# Return: True(separable) False(none-separable)
+# e1 < e2
+def LIDI_R(e1, e2, function, intercept, one_bias):
+    index = np.zeros((1, 1000))[0]
+    index[e1] = 1
+    index[e2] = 1
+    # intercept: f(0,0)
+    c = function(index)  # f(1,1)
+    b = one_bias[e1]  # f(0,1)
+    a = one_bias[e2]  # f(1,0)
+
+    return signal(c-b) == signal(a-intercept) and signal(c-a) == signal(b-intercept)
+
+
+def signal(delta):
+    if delta > 0:
+        return 1
+    elif delta == 0:
+        return 0
+    else:
+        return -1
 
 
 # Return True means proper
@@ -228,7 +296,7 @@ def is_Continue(Generations, threshold=0.001):
     for i in range(0, len(Generations)-1):
         if Generations[i] < Generations[i+1]:
             Generations[i+1] = Generations[i]
-    return np.std(Generations, ddof=1) / np.std(np.linspace(0, len(Generations), len(Generations), endpoint=False), ddof=1) > threshold
+    return np.std(Generations, ddof=1) / np.std(np.linspace(1, len(Generations)+1, len(Generations)+1, endpoint=False), ddof=1) > threshold
 
 
 def initial_population(NIND, groups, up, down, elite=None):
@@ -262,3 +330,4 @@ def Normalization(m, iter):
             if m[i][j] == 0:
                 m[i][j] = m[i-1][j]
     return m
+

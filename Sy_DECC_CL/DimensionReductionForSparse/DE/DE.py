@@ -1,28 +1,23 @@
-from in20210119.DimensionReductionForSparse.DE import MyProblem, templet
-from in20210119.DimensionReductionForSparse.util import help
+from Sy_DECC_CL.DimensionReductionForSparse.DE import MyProblem, templet
+from Sy_DECC_CL.DimensionReductionForSparse.util import help
 import geatpy as ea
 import numpy as np
 import matplotlib.pyplot as plt
 import copy
 
 
-# Asynchronous
-def DECC_CL_CCDE(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
-    var_traces = np.zeros((MAX_iteration, Dim))
-    testify_var_traces = np.zeros((MAX_iteration, Dim))
+# Synchronous
+def DECC_CL_CCDE(Dim, NIND, benchmark, scale_range, groups):
+    var_traces = np.zeros((1, Dim))
+    testify_var_traces = np.zeros((1, Dim))
     based_population = np.zeros(Dim)
     initial_Population = help.initial_population(NIND, groups, [scale_range[1]] * Dim, [scale_range[0]] * Dim, based_population)
     max_iteration = 0
-    cost = 0
-    N = 5
+
     for i in range(len(groups)):
         real_iteration = 0
         Obj_traces = []
-        while real_iteration < MAX_iteration:
-            # The continuous N generations
-            if real_iteration >= N:
-                if not help.is_Continue(Obj_traces[len(Obj_traces)-N:len(Obj_traces)], 0.1):
-                    break
+        while real_iteration < 1:
             var_trace, obj_trace, initial_Population[i] = CC_Optimization(1, benchmark, scale_range, groups[i],
                                                                based_population, initial_Population[i], real_iteration)
 
@@ -35,14 +30,14 @@ def DECC_CL_CCDE(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
             real_iteration += 1
 
         testify_var_traces[:, i] = testify_var_traces[real_iteration-1, i]
-        cost += real_iteration
+
         max_iteration = max(real_iteration, max_iteration)
-        for index in range(real_iteration, MAX_iteration):
+        for index in range(real_iteration, 1):
             var_traces[index][i] = var_traces[real_iteration-1][i]
 
     var_traces = var_traces[0:max_iteration]
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
-    return var_traces, obj_traces, initial_Population, cost * NIND
+    return var_traces, obj_traces, initial_Population
 
 
 def DECC_CL_DECC_L(Dim, NIND, MAX_iteration, benchmark, up, down, groups, elite):
@@ -55,24 +50,25 @@ def DECC_CL_DECC_L(Dim, NIND, MAX_iteration, benchmark, up, down, groups, elite)
     for i in range(len(groups)):
         var_trace, obj_trace = DECC_L_Sy(MAX_iteration, benchmark, up, down, groups[i], based_population,
                                           initial_population[i])
-        x = np.linspace(0, len(obj_trace), len(obj_trace))
-        help.draw_check(x, obj_trace, 'CC')
+        # x = np.linspace(0, len(obj_trace), len(obj_trace))
+        # help.draw_check(x, obj_trace, 'CC')
         for element in groups[i]:
             var_traces[1:MAX_iteration+1, element] = var_trace[:, groups[i].index(element)]
+            v = var_trace[len(var_trace)-1]
+            based_population[element] = v[groups[i].index(element)]
 
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
+
     return var_traces, obj_traces
 
 
 def DECC_L_Sy(MAX_iteration, benchmark, up, down, group, based_population, initial_population):
     problem = MyProblem.Block_Problem(group, benchmark, up, down, based_population)  # 实例化问题对象
 
-    """==============================种群设置==========================="""
-    population = initial_population
 
     """===========================算法参数设置=========================="""
 
-    myAlgorithm = ea.soea_DE_currentToBest_1_L_templet(problem, population)
+    myAlgorithm = ea.soea_DE_currentToBest_1_L_templet(problem, initial_population)
     myAlgorithm.MAXGEN = MAX_iteration
     myAlgorithm.drawing = 0
     """=====================调用算法模板进行种群进化====================="""
@@ -82,8 +78,8 @@ def DECC_L_Sy(MAX_iteration, benchmark, up, down, group, based_population, initi
     return var_trace, obj_trace[:, 1]
 
 
-def OptTool(Dim, NIND, MAX_iteration, benchmark, scale_range, maxormin):
-    problem = MyProblem.MyProblem(Dim, benchmark, scale_range, maxormin)  # 实例化问题对象
+def OptTool(Dim, NIND, MAX_iteration, benchmark, group, scale_range, maxormin):
+    problem = MyProblem.MyProblem(Dim, group, benchmark, scale_range, maxormin)  # 实例化问题对象
 
     """==============================种群设置==========================="""
     Encoding = 'RI'  # 编码方式
@@ -92,7 +88,9 @@ def OptTool(Dim, NIND, MAX_iteration, benchmark, scale_range, maxormin):
     population = ea.Population(Encoding, Field, NIND)
     population.initChrom(NIND)
     """===========================算法参数设置=========================="""
-
+    delta_before = []
+    for i in range(len(group)):
+        delta_before.append(sum(population.Chrom[:, i]) / NIND)
     # myAlgorithm = templet.soea_SaNSDE_templet(problem, population)
     myAlgorithm = ea.soea_DE_currentToBest_1_L_templet(problem, population)
     myAlgorithm.MAXGEN = MAX_iteration
@@ -101,7 +99,13 @@ def OptTool(Dim, NIND, MAX_iteration, benchmark, scale_range, maxormin):
     # [population, obj_trace, var_trace] = myAlgorithm.run(population, MAX_iteration)
     [population, obj_trace, var_trace] = myAlgorithm.run()
     # obj_traces.append(obj_trace[0])
-    return var_trace[len(var_trace)-1]
+    delta_after = []
+    for i in range(len(group)):
+        delta_after.append(sum(population.Chrom[:, i]) / NIND)
+    delta = []
+    for i in range(len(group)):
+        delta.append(delta_after[i] - delta_before[i])
+    return delta
 
 
 def CC_Asy(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
