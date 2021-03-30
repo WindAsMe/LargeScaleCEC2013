@@ -143,6 +143,16 @@ def CC_Sy(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
     return var_traces, obj_traces
 
 
+def Normal(Dim, NIND, MAX_iteration, benchmark, scale_range):
+    based_population = np.zeros(Dim)
+    group = []
+    for i in range(Dim):
+        group.append(i)
+    var_traces, obj_trace = CC_Optimization_Sy(NIND, MAX_iteration, benchmark, scale_range, group, based_population)
+    var_traces, obj_traces = help.preserve(var_traces, benchmark)
+    return var_traces, obj_traces
+
+
 def CC_Optimization_Sy(NIND, MAX_iteration, benchmark, scale_range, group, based_population):
     problem = MyProblem.CC_Problem(group, benchmark, scale_range, based_population)  # 实例化问题对象
 

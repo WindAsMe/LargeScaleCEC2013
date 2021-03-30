@@ -40,3 +40,15 @@ def CC_exe(Dim, func_num, NIND, Max_iteration, scale_range, groups, method):
     # x = np.linspace(0, 3000000, len(best_obj_trace))
     # help.draw_check(x, best_obj_trace, 'CC')
     help.write_obj_trace(name, method, best_obj_trace)
+
+
+def Normal_exe(Dim, func_num, NIND, Max_iteration, scale_range, method):
+    bench = Benchmark()
+    function = bench.get_function(func_num)
+    name = 'f' + str(func_num)
+
+    print(name, 'Optimization with', method)
+    """The next is DE optimization"""
+
+    best_indexes, best_obj_trace = DE.Normal(Dim, NIND, Max_iteration, function, scale_range)
+    help.write_obj_trace(name, method, best_obj_trace)

@@ -155,7 +155,7 @@ def write_obj_trace(p, fileName, trace):
 
 def write_info(p, fileName, data):
     this_path = path.realpath(__file__)
-    data_path = path.dirname(path.dirname(this_path)) + '\\Sy_data\\trace\\obj\\' + p + '\\' + fileName
+    data_path = path.dirname(path.dirname(this_path)) + '\\data\\trace\\obj\\' + p + '\\' + fileName
     with open(data_path, 'a') as f:
         f.write(data + ', ')
         f.write('\n')
@@ -164,7 +164,7 @@ def write_info(p, fileName, data):
 
 def write_CPU_cost(p, fileName, data):
     this_path = path.realpath(__file__)
-    data_path = path.dirname(path.dirname(this_path)) + '\\Sy_data\\trace\\obj\\' + p + '\\' + fileName
+    data_path = path.dirname(path.dirname(this_path)) + '\\data\\trace\\obj\\' + p + '\\' + fileName
     with open(data_path, 'a') as f:
         f.write(data + ', ')
         f.write('\n')
@@ -173,7 +173,7 @@ def write_CPU_cost(p, fileName, data):
 
 def write_EFS_cost(p, fileName, data):
     this_path = path.realpath(__file__)
-    data_path = path.dirname(path.dirname(this_path)) + '\\Sy_data\\trace\\obj\\' + p + '\\' + fileName
+    data_path = path.dirname(path.dirname(this_path)) + '\\data\\trace\\obj\\' + p + '\\' + fileName
     with open(data_path, 'a') as f:
         f.write(data + ', ')
         f.write('\n')
@@ -218,7 +218,7 @@ def draw_summary(x, x_DECC_D, x_DECC_DG, x_DECC_L, x_DECC_CL, Normal_ave, One_av
     plt.ylabel('Fitness', font)
     plt.legend()
     # plt.savefig(
-    #    'D:\CS2019KYUTAI\PythonProject\SparseModeling\Sy_data\\pic\\' + name + '_obj')
+    #    'D:\CS2019KYUTAI\PythonProject\SparseModeling\data\\pic\\' + name + '_obj')
 
     plt.text(3, 4*10e10, "**", fontdict={'size': 14, 'color': 'red'})
     plt.text(3, 6*10e10, "**", fontdict={'size': 14, 'color': 'orange'})
@@ -259,11 +259,11 @@ def LIDI_R(e1, e2, function, intercept, one_bias):
     index[e1] = 1
     index[e2] = 1
     # intercept: f(0,0)
-    c = function(index)  # f(1,1)
-    b = one_bias[e1]  # f(0,1)
-    a = one_bias[e2]  # f(1,0)
+    c = function(index)-intercept  # f(1,1)-f(0,0)
+    b = one_bias[e1]  # f(0,1)-f(0,0)
+    a = one_bias[e2]  # f(1,0)-f(0,0)
 
-    return signal(c-b) == signal(a-intercept) and signal(c-a) == signal(b-intercept)
+    return signal(c-b) == signal(a) and signal(c-a) == signal(b)
 
 
 def signal(delta):

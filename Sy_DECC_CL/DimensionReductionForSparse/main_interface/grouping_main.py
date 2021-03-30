@@ -6,8 +6,6 @@ import random
 import numpy as np
 
 
-
-
 def LASSOCC(func_num):
     Dim = 1000
     size = 5000
@@ -31,7 +29,6 @@ def LASSOCC(func_num):
     verify_time += 1001
 
     for current_index in range(0, 20):
-        # print(current_index)
         Lasso_model, Feature_names = SparseModel.Regression(degree, size, Dim, group_dim, current_index, scale_range, function)
 
         # Grouping
@@ -45,25 +42,24 @@ def LASSOCC(func_num):
             for i in range(len(g)):
                 g[i] += bias
 
+        for g in groups:
+            if not g or g is None:
+                groups.remove(g)
         # We need to check the relationship between new groups and previous groups
+
         temp_groups = []
         for i in range(len(All_groups)):
             for j in range(len(groups)):
                 if i < len(All_groups) and j < len(groups):
-                    flag = 0
-                    for verify in range(3):
-                        verify_time += 1
-                        a1 = random.randint(0, len(All_groups[i])-1)
-                        a2 = random.randint(0, len(groups[j])-1)
-                        if not help.Differential(All_groups[i][a1], groups[j][a2], function, intercept, one_bias):
-                            flag += 1
-                        if flag >= 1:
-                            g1 = All_groups.pop(i)
-                            g2 = groups.pop(j)
-                            temp_groups.append(g1+g2)
-                            i -= 1
-                            j -= 1
-                            break
+                    verify_time += 1
+
+                    if not help.Differential(All_groups[i][0], groups[j][0], function, intercept, one_bias):
+                        g1 = All_groups.pop(i)
+                        g2 = groups.pop(j)
+                        temp_groups.append(g1 + g2)
+                        i -= 1
+                        j -= 1
+                        break
 
         for g in All_groups:
             temp_groups.append(g)
@@ -73,15 +69,14 @@ def LASSOCC(func_num):
 
     for G in All_groups:
         if len(G) > 1:
-            for i in range(0, len(G)-1):
-                for j in range(i+1, len(G)):
-                    if len(G) > 1 and help.LIDI_R(G[i], G[j], function, intercept, one_bias):
-                        verify_time += 1
-                        All_groups.append([G.pop(j)])
-                        i -= 1
-                        j -= 1
+            for i in range(0, len(G) - 1):
+                for j in range(i + 1, len(G)):
+                    if i < len(G) - 1 and j < len(G) and len(G) > 1:
+                        if help.LIDI_R(G[i], G[j], function, intercept, one_bias):
+                            verify_time += 1
+                            All_groups.append([G.pop(j)])
+                            j -= 1
 
-    # print(help.check_proper(All_groups))
     return All_groups, verify_time + 100000
 
 
@@ -147,20 +142,19 @@ def DECC_DG(func_num):
     intercept = function(np.zeros((1, 1000))[0])
 
     for i in range(len(groups)-1):
-        cost += 2
-        index1 = np.zeros((1, 1000))[0]
-        index1[groups[i][0]] = 1
-        delta1 = function(index1) - intercept
-
-        for j in range(i+1, len(groups)):
+        if i < len(groups) - 1:
             cost += 2
-            if i < len(groups)-1 and j < len(groups) and not help.DG_Differential(groups[i][0], groups[j][0], delta1, function, intercept):
-                groups[i].extend(groups.pop(j))
-                j -= 1
+            index1 = np.zeros((1, 1000))[0]
+            index1[groups[i][0]] = 1
+            delta1 = function(index1) - intercept
+
+            for j in range(i+1, len(groups)):
+                cost += 2
+                if i < len(groups)-1 and j < len(groups) and not help.DG_Differential(groups[i][0], groups[j][0], delta1, function, intercept):
+                    groups[i].extend(groups.pop(j))
+                    j -= 1
 
     # print(cost)
     # print(help.check_proper(groups))
     return groups, cost
 
-
-DECC_DG(1)
