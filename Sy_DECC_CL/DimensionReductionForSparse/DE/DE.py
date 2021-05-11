@@ -7,37 +7,44 @@ import copy
 
 
 # Synchronous
-def DECC_CL_CCDE(Dim, NIND, benchmark, scale_range, groups):
-    var_traces = np.zeros((1, Dim))
-    testify_var_traces = np.zeros((1, Dim))
+def DECC_CL_CCDE(Dim, NIND, Max_iteration, benchmark, scale_range, groups):
+    var_traces = np.zeros((Max_iteration, Dim))
     based_population = np.zeros(Dim)
     initial_Population = help.initial_population(NIND, groups, [scale_range[1]] * Dim, [scale_range[0]] * Dim, based_population)
-    max_iteration = 0
-
+    max_iter = -1
+    iter_list = []
+    up = [scale_range[1]] * Dim
+    down = [scale_range[0]] * Dim
+    cost = 0
+    N = 5
     for i in range(len(groups)):
         real_iteration = 0
         Obj_traces = []
-        while real_iteration < 1:
+        while real_iteration < Max_iteration:
+            if real_iteration == 1:
+                up[i] = max(initial_Population[i].Chrom[:, 0])
+                down[i] = min(initial_Population[i].Chrom[:, 0])
+
+            # if real_iteration > N+2 and not help.is_Continue(Obj_traces[len(Obj_traces)-N:len(Obj_traces)], 0.1):
+            #     cost += real_iteration
+            #     iter_list.append(real_iteration)
+            #     max_iter = max(max_iter, real_iteration)
+            #     break
             var_trace, obj_trace, initial_Population[i] = CC_Optimization(1, benchmark, scale_range, groups[i],
                                                                based_population, initial_Population[i], real_iteration)
 
-            index = np.argmin(obj_trace[:, 1])
-            testify_var_traces[real_iteration, i] = format(var_trace[index, 0], '.8f')
-            var_traces[real_iteration, i] = format(var_trace[index, 0], '.8f')
-            based_population[i] = format(var_trace[index, 0], '.8f')
-            Obj_traces.append(benchmark(testify_var_traces[real_iteration]))
-
+            var_traces[real_iteration][i] = var_trace[1][0]
+            based_population[i] = var_trace[1][0]
+            Obj_traces.append(obj_trace[1])
             real_iteration += 1
+            if real_iteration == Max_iteration - 1:
+                iter_list.append(Max_iteration - 1)
+                max_iter = max(real_iteration, max_iter)
 
-        testify_var_traces[:, i] = testify_var_traces[real_iteration-1, i]
 
-        max_iteration = max(real_iteration, max_iteration)
-        for index in range(real_iteration, 1):
-            var_traces[index][i] = var_traces[real_iteration-1][i]
-
-    var_traces = var_traces[0:max_iteration]
+    var_traces = help.fill(var_traces, max_iter, iter_list)
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
-    return var_traces, obj_traces, initial_Population
+    return var_traces, obj_traces, initial_Population, up, down, cost * NIND
 
 
 def DECC_CL_DECC_L(Dim, NIND, MAX_iteration, benchmark, up, down, groups, elite):
@@ -48,21 +55,18 @@ def DECC_CL_DECC_L(Dim, NIND, MAX_iteration, benchmark, up, down, groups, elite)
     initial_population = help.initial_population(NIND, groups, up, down, elite)
 
     for i in range(len(groups)):
-        var_trace, obj_trace = DECC_L_Sy(MAX_iteration, benchmark, up, down, groups[i], based_population,
+        var_trace, obj_trace = DECC_L(MAX_iteration, benchmark, up, down, groups[i], based_population,
                                           initial_population[i])
-        # x = np.linspace(0, len(obj_trace), len(obj_trace))
-        # help.draw_check(x, obj_trace, 'CC')
         for element in groups[i]:
             var_traces[1:MAX_iteration+1, element] = var_trace[:, groups[i].index(element)]
-            v = var_trace[len(var_trace)-1]
-            based_population[element] = v[groups[i].index(element)]
+            based_population[element] = var_trace[len(var_trace)-1][groups[i].index(element)]
 
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
 
     return var_traces, obj_traces
 
 
-def DECC_L_Sy(MAX_iteration, benchmark, up, down, group, based_population, initial_population):
+def DECC_L(MAX_iteration, benchmark, up, down, group, based_population, initial_population):
     problem = MyProblem.Block_Problem(group, benchmark, up, down, based_population)  # 实例化问题对象
 
 
@@ -108,36 +112,15 @@ def OptTool(Dim, NIND, MAX_iteration, benchmark, group, scale_range, maxormin):
     return delta
 
 
-def CC_Asy(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
-    var_traces = np.zeros((MAX_iteration, Dim))
-    based_population = np.zeros(Dim)
-    initial_Population = help.initial_population(NIND, groups, [scale_range[1]]*Dim, [scale_range[0]]*Dim, based_population)
-    real_iteration = 0
-
-    while real_iteration < MAX_iteration:
-        for i in range(len(groups)):
-            var_trace, obj_trace, population = CC_Optimization(1, benchmark, scale_range, groups[i],
-                                                       based_population, initial_Population[i], real_iteration)
-
-            initial_Population[i] = population
-            for element in groups[i]:
-                var_traces[real_iteration, element] = var_trace[1, groups[i].index(element)]
-                based_population[element] = var_trace[1, groups[i].index(element)]
-        real_iteration += 1
-
-    var_traces, obj_traces = help.preserve(var_traces, benchmark)
-    return var_traces, obj_traces
-
-
-def CC_Sy(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
+def CC(Dim, NIND, MAX_iteration, benchmark, scale_range, groups):
     var_traces = np.zeros((MAX_iteration, Dim))
     based_population = np.zeros(Dim)
     for i in range(len(groups)):
+        # print(i)
         var_trace, obj_trace = CC_Optimization_Sy(NIND, MAX_iteration, benchmark, scale_range, groups[i], based_population)
-
         for element in groups[i]:
             var_traces[:, element] = var_trace[:, groups[i].index(element)]
-            based_population[element] = var_trace[np.argmin(obj_trace[:, 1]), groups[i].index(element)]
+            based_population[element] = var_trace[np.argmin(obj_trace), groups[i].index(element)]
 
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
     return var_traces, obj_traces
@@ -170,7 +153,7 @@ def CC_Optimization_Sy(NIND, MAX_iteration, benchmark, scale_range, group, based
     [population, obj_trace, var_trace] = myAlgorithm.run()
     # obj_traces.append(obj_trace[0])
 
-    return var_trace, obj_trace
+    return var_trace, obj_trace[:, 1]
 
 
 def CC_Optimization(MAX_iteration, benchmark, scale_range, group, based_population, p, real):
@@ -186,4 +169,4 @@ def CC_Optimization(MAX_iteration, benchmark, scale_range, group, based_populati
     [population, obj_trace, var_trace] = myAlgorithm.run(real)
     # obj_traces.append(obj_trace[0])
 
-    return var_trace, obj_trace, population
+    return var_trace, obj_trace[:, 1], population

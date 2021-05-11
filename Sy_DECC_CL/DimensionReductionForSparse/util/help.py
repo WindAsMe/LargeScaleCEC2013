@@ -191,37 +191,37 @@ def preserve(var_traces, benchmark_function):
     return var_traces, obj_traces
 
 
-def draw_summary(x, x_DECC_D, x_DECC_DG, x_DECC_L, x_DECC_CL, Normal_ave, One_ave, Random_ave, DECC_D_ave,
+def draw_summary(x_One, x_Normal, x_DECC_D, x_DECC_DG, x_DECC_L, x_DECC_CL, Normal_ave, One_ave, Random_ave, DECC_D_ave,
                  DECC_DG_ave, LASSO_ave, DECC_CL_ave):
     plt.rcParams['font.sans-serif'] = ['SimHei']
     plt.rcParams['axes.unicode_minus'] = False
 
-    plt.semilogy(x, Normal_ave, label='従来法1', linestyle=':')
-    plt.semilogy(x, One_ave, label='従来法2', linestyle=':', color='plum')
-    plt.semilogy(x, Random_ave, label='従来法3', linestyle=':', color='aqua')
+    plt.semilogy(x_Normal, Normal_ave, label='従来法1', linestyle=':')
+    plt.semilogy(x_One, One_ave, label='従来法2', linestyle=':', color='plum')
+    plt.semilogy(x_One, Random_ave, label='従来法3', linestyle=':', color='aqua')
     plt.semilogy(x_DECC_D, DECC_D_ave, label='従来法4', linestyle=':', color='grey')
     plt.semilogy(x_DECC_DG, DECC_DG_ave, label='従来法5', linestyle=':', color='lawngreen')
     plt.semilogy(x_DECC_L, LASSO_ave, label='提案法1', color='red')
     plt.semilogy(x_DECC_CL, DECC_CL_ave, label='提案法2', color='orange')
 
-    # plt.plot(x, Normal_ave, label='従来法1', linestyle=':')
-    # plt.plot(x, One_ave, label='従来法2', linestyle=':', color='aqua')
-    # plt.plot(x, Random_ave, label='従来法3', linestyle=':')
+    # plt.plot(x_Normal, Normal_ave, label='従来法1', linestyle=':')
+    # plt.plot(x_One, One_ave, label='従来法2', linestyle=':', color='aqua')
+    # plt.plot(x_One, Random_ave, label='従来法3', linestyle=':')
     # plt.plot(x_DECC_D, DECC_D_ave, label='従来法4', linestyle=':', color='grey')
     # plt.plot(x_DECC_DG, DECC_DG_ave, label='従来法5', linestyle=':', color='lawngreen')
     # plt.plot(x_DECC_L, LASSO_ave, label='提案法1', color='red')
     # plt.plot(x_DECC_CL, DECC_CL_ave, label='提案法2', color='orange')
     font_title = {'size': 18}
     font = {'size': 16}
-    plt.title('$f_{11}$', font_title)
+    plt.title('$f_{15}$', font_title)
     plt.xlabel('Fitness evaluation times (×${10^6}$)', font)
     plt.ylabel('Fitness', font)
-    plt.legend()
+    plt.legend(loc=1)
     # plt.savefig(
     #    'D:\CS2019KYUTAI\PythonProject\SparseModeling\data\\pic\\' + name + '_obj')
 
-    plt.text(3, 4*10e10, "**", fontdict={'size': 14, 'color': 'red'})
-    plt.text(3, 6*10e10, "**", fontdict={'size': 14, 'color': 'orange'})
+    plt.text(3, 2.5*10e9, "**", fontdict={'size': 14, 'color': 'red'})
+    plt.text(3, 1.5*10e9, "**", fontdict={'size': 14, 'color': 'orange'})
 
     plt.show()
 
@@ -284,19 +284,21 @@ def check_proper(groups):
     return False not in flag
 
 
-# def is_Continue(Generations, threshold=0.001):
-#     flag = [True] * (len(Generations) - 1)
-#     for i in range(len(Generations) - 1):
-#         if Generations[i + 1] * (1 + threshold) > Generations[i]:
-#             flag[i] = False
-#     return True in flag
-
-
-def is_Continue(Generations, threshold=0.001):
+# False: stop
+def is_Continue(Generations, threshold=0.01):
+    delta = []
     for i in range(0, len(Generations)-1):
-        if Generations[i] < Generations[i+1]:
-            Generations[i+1] = Generations[i]
-    return np.std(Generations, ddof=1) / np.std(np.linspace(1, len(Generations)+1, len(Generations)+1, endpoint=False), ddof=1) > threshold
+        delta.append(Generations[i] - Generations[i+1])
+    if delta.count(0) > len(Generations) / 2:
+        return False
+    flag = [False] * (len(delta) - 2)
+    for i in range(len(delta) - 2):
+        div = delta[i] + delta[i+1]
+        if div == 0:
+            div = 1e-100
+        if ((delta[i+1] + delta[i+2]) / div) < (1-threshold):
+            flag[i] = True
+    return False in flag
 
 
 def initial_population(NIND, groups, up, down, elite=None):
@@ -330,4 +332,27 @@ def Normalization(m, iter):
             if m[i][j] == 0:
                 m[i][j] = m[i-1][j]
     return m
+
+
+def draw_error(f):
+    up_error = []
+    down_error = []
+    for i in range(0, 10):
+        up_error.append(f[i, 1] - f[i, 3])
+        down_error.append(f[i, 3] - f[i, 2])
+
+    font_title = {'size': 18}
+    font = {'size': 16}
+    plt.title('$f_{13}$', font_title)
+    plt.xlabel('Iteration times', font)
+    plt.ylabel('Percentage', font)
+    plt.errorbar([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], f[:, 3], yerr=[down_error, up_error], fmt="o")
+    plt.show()
+
+
+def fill(var, max_iter, iter_list):
+    for j in range(len(var[0])):
+        for i in range(iter_list[j], max_iter):
+            var[i][j] = var[i-1][j]
+    return var[0:max_iter]
 

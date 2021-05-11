@@ -32,7 +32,7 @@ class CC_Problem(ea.Problem):
         for p in temp_Phen:
             result.append([self.benchmark(p)])
         pop.ObjV = np.array(result)
-        # print(min(result))
+        # print(result)
 
 
 class Block_Problem(ea.Problem):
@@ -44,6 +44,7 @@ class Block_Problem(ea.Problem):
         varTypes = [0] * self.Dim
         sub_lb = []
         sub_ub = []
+
         for e in group:
             sub_lb.append(down[e])
             sub_ub.append(up[e])

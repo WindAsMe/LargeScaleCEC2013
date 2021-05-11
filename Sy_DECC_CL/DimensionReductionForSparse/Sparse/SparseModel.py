@@ -33,14 +33,14 @@ def Regression(degree, train_size, total_dim, group_dim, current_index, scale_ra
     label = help.create_result(total_train_data, benchmark)
     real_train_data_ploy = poly_reg.fit_transform(real_train_data)
 
-    reg_Lasso = linear_model.Lasso()
+    reg_Lasso = linear_model.Lasso(max_iter=10000)
     reg_Lasso.fit(real_train_data_ploy, label)
     feature_names = poly_reg.get_feature_names(input_features=get_feature_name(group_dim))
     flag = max(abs(reg_Lasso.coef_))
     valid_feature = []
     valid_coef = []
     for i in range(len(reg_Lasso.coef_)):
-        if abs(reg_Lasso.coef_[i]) > 0.01 and abs(reg_Lasso.coef_[i]) > flag * 0.1:
+        if abs(reg_Lasso.coef_[i]) > 0.1 and abs(reg_Lasso.coef_[i]) > flag * 0.1:
             valid_feature.append(feature_names[i])
             valid_coef.append(reg_Lasso.coef_[i])
             continue

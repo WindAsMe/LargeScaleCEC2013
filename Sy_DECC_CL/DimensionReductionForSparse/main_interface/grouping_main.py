@@ -8,11 +8,11 @@ import numpy as np
 
 def LASSOCC(func_num):
     Dim = 1000
-    size = 5000
+    group_dim = 10
+    size = group_dim * 100
     degree = 3
     bench = Benchmark()
-    group_dim = 50
-    max_variables_num = 50
+    max_variables_num = group_dim
 
     function = bench.get_function(func_num)
     benchmark_summary = bench.get_info(func_num)
@@ -28,7 +28,8 @@ def LASSOCC(func_num):
         one_bias.append(function(index) - intercept)
     verify_time += 1001
 
-    for current_index in range(0, 20):
+    for current_index in range(0, int(Dim / group_dim)):
+        # print(current_index)
         Lasso_model, Feature_names = SparseModel.Regression(degree, size, Dim, group_dim, current_index, scale_range, function)
 
         # Grouping
@@ -67,15 +68,15 @@ def LASSOCC(func_num):
             temp_groups.append(g)
         All_groups = temp_groups.copy()
 
-    for G in All_groups:
-        if len(G) > 1:
-            for i in range(0, len(G) - 1):
-                for j in range(i + 1, len(G)):
-                    if i < len(G) - 1 and j < len(G) and len(G) > 1:
-                        if help.LIDI_R(G[i], G[j], function, intercept, one_bias):
-                            verify_time += 1
-                            All_groups.append([G.pop(j)])
-                            j -= 1
+    # for G in All_groups:
+    #     if len(G) > 1:
+    #         for i in range(0, len(G) - 1):
+    #             for j in range(i + 1, len(G)):
+    #                 if i < len(G) - 1 and j < len(G) and len(G) > 1:
+    #                     if help.LIDI_R(G[i], G[j], function, intercept, one_bias):
+    #                         verify_time += 1
+    #                         All_groups.append([G.pop(j)])
+    #                         j -= 1
 
     return All_groups, verify_time + 100000
 
@@ -154,7 +155,4 @@ def DECC_DG(func_num):
                     groups[i].extend(groups.pop(j))
                     j -= 1
 
-    # print(cost)
-    # print(help.check_proper(groups))
     return groups, cost
-
