@@ -153,11 +153,14 @@ def write_obj_trace(p, fileName, trace):
         f.close()
 
 
-def write_info(p, fileName, data):
+def write_info(fileName, data):
     this_path = path.realpath(__file__)
-    data_path = path.dirname(path.dirname(this_path)) + '\\data\\trace\\obj\\' + p + '\\' + fileName
+    data_path = path.dirname(path.dirname(this_path)) + '\\data\\trace\\opt\\' + fileName
     with open(data_path, 'a') as f:
-        f.write(data + ', ')
+        f.write('[')
+        for d in data:
+            f.write(str(d) + ', ')
+        f.write(']')
         f.write('\n')
         f.close()
 

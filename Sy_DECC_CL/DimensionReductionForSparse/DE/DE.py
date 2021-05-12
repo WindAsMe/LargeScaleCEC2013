@@ -7,7 +7,7 @@ import copy
 
 
 # Synchronous
-def DECC_CL_CCDE(Dim, NIND, Max_iteration, benchmark, scale_range, groups):
+def DECC_CL_CCDE(Dim, NIND, Max_iteration, benchmark, scale_range, groups, candidate):
     var_traces = np.zeros((Max_iteration, Dim))
     based_population = np.zeros(Dim)
     initial_Population = help.initial_population(NIND, groups, [scale_range[1]] * Dim, [scale_range[0]] * Dim, based_population)
@@ -21,15 +21,17 @@ def DECC_CL_CCDE(Dim, NIND, Max_iteration, benchmark, scale_range, groups):
         real_iteration = 0
         Obj_traces = []
         while real_iteration < Max_iteration:
-            if real_iteration == 1:
-                up[i] = max(initial_Population[i].Chrom[:, 0])
-                down[i] = min(initial_Population[i].Chrom[:, 0])
+            up_temp = max(initial_Population[i].Chrom[:, 0])
+            down_temp = min(initial_Population[i].Chrom[:, 0])
 
-            # if real_iteration > N+2 and not help.is_Continue(Obj_traces[len(Obj_traces)-N:len(Obj_traces)], 0.1):
-            #     cost += real_iteration
-            #     iter_list.append(real_iteration)
-            #     max_iter = max(max_iter, real_iteration)
-            #     break
+            if real_iteration >= N and not help.is_Continue(Obj_traces[len(Obj_traces)-N:len(Obj_traces)], 0.1) or not down_temp < candidate[i] < up_temp:
+                cost += real_iteration
+                iter_list.append(real_iteration)
+                max_iter = max(max_iter, real_iteration)
+                break
+
+            up[i] = up_temp
+            down[i] = down_temp
             var_trace, obj_trace, initial_Population[i] = CC_Optimization(1, benchmark, scale_range, groups[i],
                                                                based_population, initial_Population[i], real_iteration)
 
@@ -40,7 +42,6 @@ def DECC_CL_CCDE(Dim, NIND, Max_iteration, benchmark, scale_range, groups):
             if real_iteration == Max_iteration - 1:
                 iter_list.append(Max_iteration - 1)
                 max_iter = max(real_iteration, max_iter)
-
 
     var_traces = help.fill(var_traces, max_iter, iter_list)
     var_traces, obj_traces = help.preserve(var_traces, benchmark)
